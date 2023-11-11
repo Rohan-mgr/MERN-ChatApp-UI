@@ -1,0 +1,94 @@
+@use "./utils" as u;
+
+$alert-color-error: #ef0909;
+$alert-color-info: #8644fb;
+$alert-color-success: #00b3a6;
+
+$alert-background-error: #f3dede;
+$alert-background-info: #f2e7fe;
+$alert-background-success: #ecfdf0;
+
+.alert-box {
+    width: 100%;
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 5px 0 5px 15px;
+    display: flex;
+    justify-content: space-between;
+    
+    &.alert-box-info {
+        background-color: $alert-background-info;
+        color: $alert-color-info;
+    }
+
+    &.alert-box-error {
+        background-color: $alert-background-error;
+        color: $alert-color-error;
+    }
+
+    &.alert-box-success {
+        color: $alert-color-success;
+        background-color: $alert-background-success;
+    }
+
+    .alert-symbol-description {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        .alert-symbol {
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+
+            &.alert-symbol-success {
+                background-color: $alert-color-success;
+            }
+
+            &.alert-symbol-info {
+                background-color: $alert-color-info;
+            }
+
+            &.alert-symbol-error {
+                background-color: $alert-color-error;
+            }
+        }
+        
+        .alert-box-message {
+            p:first-child {
+                font-weight: bolder;
+                margin-bottom: 0;
+            }
+            p:last-child {
+                margin-bottom: 0;
+                font-size: u.rem(13);
+            }
+        }
+    }
+
+    .alert-close-btn {
+        height: 1rem;
+        display: flex;
+        align-items: center;
+        background: none;
+        border: none;
+        font-size: 1.3rem;
+        cursor: pointer;
+
+        &.alert-close-btn-success {
+            color: #00b3a6;
+        }
+        &.alert-close-btn-error {
+            color: #ef0909;
+        }
+        &.alert-close-btn-info {
+            color: #8644fb;
+        }
+    }
+
+        
+}

@@ -1,0 +1,6 @@
+@use "./utils" as u; 
+
+.chat__header {
+    box-shadow: u.rem(2) 1px 3px #6c6969;
+    height: u.rem(70); 
+}

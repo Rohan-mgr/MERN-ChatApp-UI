@@ -1,0 +1,9 @@
+@use "./utils" as u; 
+
+.chat__body {
+    padding: 0 u.rem(10) u.rem(5) 0;
+    height: calc(100vh - u.rem(70) - u.rem(40) - u.rem(25));
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: scroll;
+}

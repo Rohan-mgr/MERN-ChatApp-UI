@@ -1,0 +1,13 @@
+@use './utils' as u; 
+
+.primary {
+    border-radius: u.rem(4);
+    height: u.rem(40);
+    background: #4000F5;
+    color: #fff;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+}

@@ -1,0 +1,31 @@
+@use "function" as f; 
+
+//700px , 900px, 1440px  for fsing min-width in media qfery;
+$breakpoints-up: (
+    "sm": f.em(576),
+    "medium": f.em(768), 
+    "large": f.em(992), 
+    "xlarge": f.em(1200),
+);
+
+
+// 699.98px, 899.98px, 1439.98px for using max-width in media query;
+$breakpoints-down: (
+    "sx": f.em(575.98),
+    "sm": f.em(767.98),
+    "medium": f.em(991.98), 
+    "large": f.em(1199.98), 
+    "xlarge": f.em(1439.98),
+); 
+
+@mixin breakpoint-up($size) {
+    @media (min-width: map-get($breakpoints-up, $size)) {
+        @content;
+    }
+}
+
+@mixin breakpoint-down($size) {
+    @media (max-width: map-get($breakpoints-down, $size)){
+        @content;
+    }
+}

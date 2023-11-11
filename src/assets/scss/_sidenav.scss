@@ -1,0 +1,56 @@
+@use "./utils" as u; 
+.side__nav {
+    width: 100%; 
+    padding: 0 1rem;
+    height: 100vh;
+    
+    &__users {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - u.rem(58) - u.rem(55) - u.rem(56));
+        overflow-y: scroll;
+
+    }
+    
+    &__searchedUsers {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - u.rem(58) - u.rem(55) - u.rem(24));
+        overflow-y: scroll;
+        position: absolute;
+        width: 30.7%;
+
+    }
+
+    &__header {
+        display: flex;
+        height: u.rem(50);
+        justify-content: space-between;
+        align-items: center;
+        margin: .5rem 0; 
+
+        &__button__wrapper {
+            flex: 1;
+        }
+
+        h3 {
+            flex: 2;
+            margin-bottom: 0;
+        }
+    }
+
+    &__search {
+        height: u.rem(55);
+        position: relative;
+
+        form svg {
+            font-size: u.rem(22);
+            position: absolute;
+            top: 50%; 
+            left: .3rem;
+            transform: translateY(-50%); 
+        }
+    }
+}

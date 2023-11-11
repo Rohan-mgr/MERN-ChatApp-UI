@@ -1,0 +1,117 @@
+@use "./utils" as u;
+
+// gradient text
+%gradient-text {
+    background: linear-gradient(90deg, #5F1599 0%, #4102FF 100%);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+.home {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @include u.breakpoint-up(medium) {
+            grid-template-columns: 1fr 1fr;
+    }
+    
+    &__image {
+        display: flex;
+        color: #fff;
+        height: inherit;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: u.rem(20);
+        background: linear-gradient(180deg, #5F1599 0%, #4102FF 100%);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+        @include u.breakpoint-up(medium) {
+             justify-content: center;
+        }
+
+        
+    }
+    
+    &__form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: inherit;
+        background: #fff;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        @include u.breakpoint-up(medium) {
+            opacity: 1;
+            position: relative;
+            background: #fff;
+        }
+
+        h3 {
+            @extend %gradient-text;
+        }
+
+        form {
+            width: calc(100% - u.rem(70));
+            @include u.breakpoint-up(sm) {
+                    width: calc(100% - u.rem(300));
+            }
+            @include u.breakpoint-up(medium) {
+                    width: calc(100% - u.rem(80));
+            }
+            @include u.breakpoint-up(large) {
+                    width: calc(100% - u.rem(200));
+            }
+            .form__navigation {
+                display: flex;
+                justify-content: space-around;
+                margin-bottom: u.rem(26);
+                height: u.rem(32);
+                padding: 5px;
+            }
+
+            
+            
+            .form__navigation__nav{
+                flex: 1;
+                text-align: center;
+                cursor: pointer;
+                height: inherit;
+                transition: all 0.1s ease-in-out;
+                font-weight: 600;
+                opacity: 0.5;
+                &:hover {
+                    opacity: 1;
+                }
+                &.active__nav {
+                    opacity: 1;
+                    animation: borderAnimation 0.7s ease-in-out forwards;
+                }
+                
+                @keyframes borderAnimation {
+                    0% {
+                        opacity: 0.5;
+                        border-bottom: u.rem(3) solid #fff;
+                    }
+                    100%{
+                        opacity: 1;
+                        border-bottom: u.rem(3) solid #4102FF;
+
+                    }
+                    
+                    
+                }
+            }
+
+            input {
+                margin-bottom: u.rem(10);
+            }
+        }
+
+    }
+}

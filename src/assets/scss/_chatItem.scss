@@ -1,0 +1,15 @@
+@use "./utils" as u; 
+.chat__item {
+    color: #fff;
+    width: fit-content;
+    margin-top: u.rem(3); 
+    padding: u.rem(5) u.rem(10);
+    border-radius: u.rem(30);
+    background: #c1bebe;
+    align-self: flex-start;
+    
+    &.isSender {
+        background: linear-gradient(270deg, rgba(255, 105, 104, 1) 0%, rgba(163, 52, 250, 1) 33%, rgba(6, 149, 255, 1) 100%);
+        align-self: flex-end;
+    }
+}

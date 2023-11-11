@@ -1,0 +1,47 @@
+@use "./utils" as u; 
+
+.name__initials {
+    display: flex;
+    align-items: center;
+    height: u.rem(70); 
+    border-radius: u.rem(7);
+    width: 100%;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #edecec;
+    }
+
+    &__wrapper {
+        color: #fff;
+        height: inherit;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        min-width: u.rem(55);
+        clip-path: circle(calc(100% - 2.5rem));
+        background-color: rgb(127, 127, 203);
+        margin-right: u.rem(13);
+
+        span {
+            font-weight: 700;
+            font-size: clamp(u.rem(16), 1.2vw + u.rem(10),u.rem(20));
+        }
+    }
+    
+    &__content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        // justify-content: center;
+        // align-items: center;
+        p {
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        span {
+            display: inline-block;
+            font-size: 14px;
+        }
+    }
+}

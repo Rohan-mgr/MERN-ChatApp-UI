@@ -1,0 +1,29 @@
+@use "./utils" as u; 
+
+.chat__bottom {
+    height: u.rem(40); 
+    padding-right: u.rem(10);
+    
+    form {
+        width: 100%;
+        display: flex;
+
+        button {
+            height: u.rem(52);
+            padding: u.rem(10);
+            margin-left: u.rem(5);
+            border-radius: u.rem(10); 
+            cursor: pointer;
+            border: 2px solid #0275d8; 
+
+            svg {
+                color: #0275d8;
+                font-size: u.rem(25);
+            }
+        }
+    }
+
+    &__input {
+        flex: 1; 
+    }
+}

@@ -1,0 +1,27 @@
+@use "./utils" as u; 
+
+input {
+    height: u.rem(52);
+    font-size: clamp(u.rem(16), 1.2vw, u.rem(24));
+    width: 100%;
+    border-radius: u.rem(10);
+    border: 1px solid #f2f2f2;
+    outline: 0; 
+    background-color: #f2f2f2;
+    padding: 5px 0 5px 1.8rem;
+
+    &.inputRedBorder {
+        border-bottom: 3px solid #b00020;
+        background: #fff3f3;
+        color: #b00020;
+    }
+
+    &:focus {
+        border: 2px solid #000;
+    }
+}
+
+.errorMessage {
+    color: #b00020;
+    font-size: clamp(u.rem(16), 1.2vw, u.rem(24));
+}
