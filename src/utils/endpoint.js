@@ -1,4 +1,4 @@
-import { config } from "../axios-config";
+import { config } from "../../axios-config";
 
 export const userEndpoints = {
   users: config.baseURL + "/api/user",

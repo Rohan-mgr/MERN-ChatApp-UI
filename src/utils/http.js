@@ -1,5 +1,5 @@
 import axios from "axios";
-import { config } from "../axios-config";
+import { config } from "../../axios-config";
 import { getUserToken } from "./storage";
 
 // http is for unauthenticated routes i.e token is not needed

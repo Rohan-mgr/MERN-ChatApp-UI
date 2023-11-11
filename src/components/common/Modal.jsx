@@ -55,6 +55,12 @@ export default function RoomModal({ show, handleClose }) {
     setShowSearch(false);
   };
 
+  const handleRoomUserRemoval = (userId) => {
+    const updatedUsers = selectedUsers.filter(user => user?._id !== userId); 
+    setSelectedUsers(updatedUsers);
+    console.log(updatedUsers, 'updated users');
+  }
+
   const handleCreateRoom = async () => {
     try {
       const response = await createGroupChat(roomName, selectedUsers);
@@ -65,7 +71,7 @@ export default function RoomModal({ show, handleClose }) {
     socket.emit("create", roomName);
     handleClose();
   };
-
+console.log(selectedUsers);
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -83,7 +89,7 @@ export default function RoomModal({ show, handleClose }) {
         />
         <div className="selected__users">
           {selectedUsers.length > 0 &&
-            selectedUsers.map((user) => <p key={user?._id}>{user?.fullName}</p>)}
+            selectedUsers.map((user) => <p key={user?._id}>{user?.fullName} <span onClick={() => handleRoomUserRemoval(user?._id)}>x</span></p>)}
         </div>
         <div className="side__nav__search">
           <form onSubmit={formik.handleSubmit}>
