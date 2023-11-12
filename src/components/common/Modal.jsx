@@ -114,7 +114,7 @@ console.log(selectedUsers);
               <p
                 key={user?._id}
                 style={{ cursor: "pointer" }}
-                onClick={() => handleUserClick(user)}
+                onClick={() => {formik.values.search = ""; handleUserClick(user)}}
               >
                 {user?.fullName}
               </p>

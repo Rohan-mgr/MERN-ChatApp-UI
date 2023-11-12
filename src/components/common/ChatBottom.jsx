@@ -20,7 +20,7 @@ export default function ChatBottom() {
       const payload = { ...values, chatId };
       try {
         const response = await sendMessage(payload);
-        console.log(response);
+        console.log(response, 'response >>>>>>>>>>>');
         socket.emit("new message", response?.data);
       } catch (error) {
         console.log(error);

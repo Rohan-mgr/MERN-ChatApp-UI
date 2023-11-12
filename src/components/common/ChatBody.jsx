@@ -10,8 +10,6 @@ export default function ChatBody() {
   const { user } = _getSecureLs("auth");
   const { chatId } = useParams();
 
-  console.log(messages, "from context api");
-
   useEffect(() => {
     const fetchChatMessages = async () => {
       try {
@@ -23,7 +21,6 @@ export default function ChatBody() {
     };
     fetchChatMessages();
   }, [chatId]);
-console.log(messages);
   return (
     <div className="chat__body">
       {messages?.length > 0 ? (

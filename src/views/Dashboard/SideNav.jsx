@@ -57,9 +57,13 @@ function SideNav() {
     }
   };
 
-  const handleSearchedUserClick = async (userId) => {
+  const handleSearchedUserClick = async (userId, userFullName) => {
     try {
       const response = await startChat(userId);
+      console.log(response, "response searched user click");
+      navigate(`/chat/${response?.data?._id}`, {
+        state: userFullName,
+      });
       setChats((prevState) => {
         return [response?.data, ...prevState];
       });
@@ -118,7 +122,7 @@ function SideNav() {
                 <NameInitials
                   handleClick={() => {
                     // setSelectedChat(chat);
-                    // console.log(chat, "chats");
+                    console.log(chat, "sidechat clicked");
                     navigate(`chat/${chat?._id}`, {
                       state: name,
                     });
@@ -140,11 +144,9 @@ function SideNav() {
             return (
               <NameInitials
                 handleClick={() => {
-                  handleSearchedUserClick(user?._id);
+                  console.log(user, "searched user clicked");
+                  handleSearchedUserClick(user?._id, user?.fullName);
                   formik.values.search = "";
-                  navigate(`/chat/${user?._id}`, {
-                    state: user?.fullName,
-                  });
                   setShowSearch(false);
                 }}
                 key={user?._id}
