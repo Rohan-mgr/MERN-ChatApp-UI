@@ -117,17 +117,16 @@ function SideNav() {
               let name = chat?.isGroupChat
                 ? chat?.groupName
                 : chat?.users[toggleUser]?.fullName;
-              console.log(name);
               return (
                 <NameInitials
+                  key={chat?._id}
                   handleClick={() => {
                     // setSelectedChat(chat);
-                    console.log(chat, "sidechat clicked");
                     navigate(`chat/${chat?._id}`, {
                       state: name,
                     });
                   }}
-                  key={chat?.users[toggleUser]?._id}
+                  // key={chat?.users[toggleUser]?._id}
                   name={name}
                   message={chat?.latestMessage?.content}
                 />
@@ -140,16 +139,14 @@ function SideNav() {
       ) : (
         <div className="side__nav__searchedUsers">
           {searchedUsers?.map((user) => {
-            console.log(user, "sidenav user");
             return (
               <NameInitials
+                key={user?._id}
                 handleClick={() => {
-                  console.log(user, "searched user clicked");
                   handleSearchedUserClick(user?._id, user?.fullName);
                   formik.values.search = "";
                   setShowSearch(false);
                 }}
-                key={user?._id}
                 name={user?.fullName}
               />
             );

@@ -7,3 +7,14 @@
     flex-direction: column-reverse;
     overflow-y: scroll;
 }
+.chat__body__loader {
+    width: 100%; 
+    height: calc(100vh - 4.7rem); 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    background: #f8f9fa;
+    position: absolute;
+    top: 4.6rem; 
+    left: 0; 
+}
