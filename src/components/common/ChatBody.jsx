@@ -7,6 +7,7 @@ import ChatItem from "./ChatItem";
 import BeatLoader from "react-spinners/BeatLoader";
 
 
+
 export default function ChatBody() {
   const { messages, setMessages } = useContext(SocketContext);
   const [loading, setLoading] = useState(false);
@@ -39,15 +40,9 @@ export default function ChatBody() {
             console.log(m);
             return (
               <React.Fragment key={m?._id}>
-                <p
-                  style={{
-                    textAlign: user?._id === m?.sender?._id ? "right" : "left",
-                  }}
-                >
-                  {m?.sender?.fullName}
-                </p>
                 <ChatItem
                   key={m?._id}
+                  name={m?.sender?.fullName}
                   isSender={user?._id === m?.sender?._id ? true : false}
                 >
                   {m?.content}
