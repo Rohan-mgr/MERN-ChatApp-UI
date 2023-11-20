@@ -37,7 +37,6 @@ export default function ChatBody() {
           .slice()
           .reverse()
           .map((m) => {
-            console.log(m);
             return (
               <React.Fragment key={m?._id}>
                 <ChatItem

@@ -19,9 +19,13 @@ export default function ChatBottom() {
     onSubmit: async (values, { resetForm }) => {
       const payload = { ...values, chatId };
       try {
+        // console.log(values, "values")
+        // socket.emit("message:sent", payload);
         const response = await sendMessage(payload);
         console.log(response, 'response >>>>>>>>>>>');
-        socket.emit("new message", response?.data);
+        if(response?.data?.chat?.isGroupChat) {
+          socket.emit("new message", response?.data);
+        }
       } catch (error) {
         console.log(error);
       }
