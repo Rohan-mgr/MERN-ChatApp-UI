@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 export const SocketContext = createContext({});
 
-export const SocketContextProvider = ({ chatId, children, url }) => {
+export const SocketContextProvider = ({ chatId, children, url, token, user }) => {
   const [socket, setSocket] = useState({});
   const [emitters, setEmitters] = useState({});
   const [messages, setMessages] = useState([]);
@@ -24,12 +24,16 @@ export const SocketContextProvider = ({ chatId, children, url }) => {
   }
 
   const socketHandlers = SocketHandlers(setData);
+  console.log(socketHandlers, "socketHandlers");
 
   useEffect(() => {
-    const socket = io.connect(url);
+    const socket = io.connect(url, {
+      query: {token}
+    });
     setSocket(socket);
 
     socket.on("connect", async () => {
+      socket.emit("user:join", user)
       Object.entries(socketHandlers).forEach(([eventName, listener]) => {
         socket.on(eventName, listener.bind(socket));
       });
@@ -63,4 +67,6 @@ SocketContextProvider.propTypes = {
   chatId: PropTypes.string, 
   children: PropTypes.node, 
   url: PropTypes.string,
+  token: PropTypes.string, 
+  user: PropTypes.object,
 }

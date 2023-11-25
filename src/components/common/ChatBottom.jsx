@@ -4,7 +4,7 @@ import InputField from "./InputField";
 import { BsFillSendFill } from "react-icons/bs";
 import { useFormik } from "formik";
 import { messageSchema } from "../../validation/validation";
-import { sendMessage } from "../../services/chat";
+// import { sendMessage } from "../../services/chat";
 import { SocketContext } from "../../context/socket.context";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -17,15 +17,15 @@ export default function ChatBottom() {
     },
     validationSchema: messageSchema,
     onSubmit: async (values, { resetForm }) => {
-      const payload = { ...values, chatId };
+      const payload = { ...values, chatId};
       try {
         // console.log(values, "values")
-        // socket.emit("message:sent", payload);
-        const response = await sendMessage(payload);
-        console.log(response, 'response >>>>>>>>>>>');
-        if(response?.data?.chat?.isGroupChat) {
-          socket.emit("new message", response?.data);
-        }
+        socket.emit("message:sent", payload);
+        // const response = await sendMessage(payload);
+        // console.log(response, 'response >>>>>>>>>>>');
+        // if(response?.data?.chat?.isGroupChat) {
+        //   socket.emit("new message", response?.data);
+        // }
       } catch (error) {
         console.log(error);
       }

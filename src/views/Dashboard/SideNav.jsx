@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext} from "react";
 import Button from "../../components/common/Button";
 import { _remove, _getSecureLs } from "../../utils/storage";
 import { useNavigate } from "react-router-dom";
@@ -10,24 +10,19 @@ import { startChat } from "../../services/chat";
 import { searchUsers } from "../../services/user";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Modal from "../../components/common/Modal";
-// import { SocketContext } from "../../context/socket.context";
-
-// import ChatContext from "../../context/ChatContext";
+import { SocketContext } from "../../context/socket.context";
 
 function SideNav() {
   const navigate = useNavigate();
-  // const { setSelectedChat } = useContext(ChatContext);
-  // const { searchedUsers, setSearchedUsers } = useContext(SocketContext);
-
+  const {messages} = useContext(SocketContext);
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const [showSearch, setShowSearch] = useState(false);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const { isLoading, chats, setChats } = useFetchChats();
   const { user } = _getSecureLs("auth");
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const formik = useFormik({
     initialValues: {
@@ -126,9 +121,11 @@ function SideNav() {
                       state: name,
                     });
                   }}
-                  // key={chat?.users[toggleUser]?._id}
                   name={name}
-                  message={chat?.latestMessage?.content}
+                  userId={user?._id}
+                  chatId={chat?._id}
+                  message={messages && messages[messages?.length - 1]}
+                  isHeading={true}
                 />
               );
             })

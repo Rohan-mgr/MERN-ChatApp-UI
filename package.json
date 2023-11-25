@@ -24,7 +24,7 @@
     "react-spinners": "^0.13.8",
     "react-transition-group": "^4.4.5",
     "secure-ls": "^1.2.6",
-    "socket.io-client": "^4.7.2",
+    "socket.io-client": "^2.5.0",
     "yup": "^1.2.0"
   },
   "devDependencies": {

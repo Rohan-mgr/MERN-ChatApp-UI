@@ -1,6 +1,5 @@
 export const SocketHandlers = (setData) => ({
   "save-messsage": function (data) {
-    console.log(data, "datajfsjfsjd")
     setData("message", data);
   },
 });

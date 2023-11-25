@@ -16,6 +16,12 @@ export const fetchMessages = async (chatId) => {
   const response = await httpAuth.get(URL);
   return response;
 };
+export const fetchAllMessages = async () => {
+  const URL = chatEndpoints.fetchAllMessages;
+  console.log(URL, "URL >>>>>>>>>>>>");
+  const response = await httpAuth.get(URL);
+  return response;
+};
 export const sendMessage = async (values) => {
   const URL = chatEndpoints.sendMessage;
   const response = await httpAuth.post(URL, values);
