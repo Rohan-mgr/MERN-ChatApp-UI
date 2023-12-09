@@ -22,7 +22,7 @@ function NameInitials({ name, userId, handleClick, chatId, isHeading, socket }) 
         throw new Error(error);
       }
     };
-    fetchChatMessages();
+    chatId && fetchChatMessages();
   }, [chatId === latestMsg?.chat?._id]);
 
 
