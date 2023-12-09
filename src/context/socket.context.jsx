@@ -24,7 +24,6 @@ export const SocketContextProvider = ({ chatId, children, url, token, user }) =>
   }
 
   const socketHandlers = SocketHandlers(setData);
-  console.log(socketHandlers, "socketHandlers");
 
   useEffect(() => {
     const socket = io.connect(url, {

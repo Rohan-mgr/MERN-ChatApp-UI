@@ -14,7 +14,7 @@ import { SocketContext } from "../../context/socket.context";
 
 function SideNav() {
   const navigate = useNavigate();
-  const {messages} = useContext(SocketContext);
+  const {socket} = useContext(SocketContext);
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -108,6 +108,7 @@ function SideNav() {
             <ScaleLoader color="#0D6EFD" style={{ textAlign: "center" }} />
           ) : chats?.length > 0 ? (
             chats?.map((chat) => {
+              let latestMessage = chat?.latestMessage;
               let toggleUser = chat.users[0]?._id === user?._id ? 1 : 0;
               let name = chat?.isGroupChat
                 ? chat?.groupName
@@ -121,11 +122,12 @@ function SideNav() {
                       state: name,
                     });
                   }}
+                  message={latestMessage}
                   name={name}
                   userId={user?._id}
                   chatId={chat?._id}
-                  message={messages && messages[messages?.length - 1]}
                   isHeading={true}
+                  socket={socket}
                 />
               );
             })

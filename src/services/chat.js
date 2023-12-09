@@ -1,13 +1,13 @@
 import { httpAuth } from "../utils/http";
 import { chatEndpoints } from "../utils/endpoint";
 
-export const createGroupChat = async (roomName, users) => {
+export const createGroupChat = async (roomName, roomId, users) => {
   console.log(roomName, users);
   const URL = chatEndpoints.createGroup;
   console.log(URL);
   const response = await httpAuth.post(
     URL,
-    JSON.stringify({ roomName, users })
+    JSON.stringify({ roomName, roomId, users })
   );
   return response;
 };

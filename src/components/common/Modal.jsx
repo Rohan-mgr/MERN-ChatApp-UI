@@ -7,6 +7,7 @@ import { searchUsers } from "../../services/user";
 import { SocketContext } from "../../context/socket.context";
 import { createGroupChat } from "../../services/chat";
 import PropTypes from "prop-types";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function RoomModal({ show, handleClose }) {
   const { socket } = useContext(SocketContext);
@@ -58,15 +59,16 @@ export default function RoomModal({ show, handleClose }) {
   const handleRoomUserRemoval = (userId) => {
     const updatedUsers = selectedUsers.filter(user => user?._id !== userId); 
     setSelectedUsers(updatedUsers);
-    console.log(updatedUsers, 'updated users');
   }
 
   const handleCreateRoom = async () => {
     try {
-      const response = await createGroupChat(roomName, selectedUsers);
-      console.log(response);
+      const uniqueRoomId = uuidv4();
+      const response = await createGroupChat(roomName, uniqueRoomId, selectedUsers);
+      console.log(response, "create room >>>>>>>>>>>>>>>>>>>>>>", roomName, uniqueRoomId);
     } catch (error) {
       console.log(error);
+      throw error;
     }
     socket.emit("create", roomName);
     handleClose();
