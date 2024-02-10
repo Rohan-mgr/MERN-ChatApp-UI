@@ -2,6 +2,38 @@
 
 .chat__item {
     display: flex;
+
+    a {
+        color: #fff;
+    }
+
+    &__image__wrapper {
+        width: calc(20vw - 40px); 
+        height: 200px;
+        overflow: hidden;
+
+        img {
+            width: inherit;
+            height: inherit;
+            border-radius: u.rem(20);
+        }
+    }
+
+    .msg__file__icon {
+        display: inline-block;
+        background-color: #fff;
+        border-radius: 50%;
+        text-align: center;
+        padding: 1px 1.5px;
+        margin: 6px 3px 6px 0;
+    }
+
+    svg {
+        font-size: 1.3rem;
+        margin-top: -2px;
+        margin-left: 2px;
+        color: #0275d8;
+    }
 }
 
 .chat__item__content {

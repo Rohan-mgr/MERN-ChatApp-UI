@@ -8,12 +8,14 @@ export default function InputField({
   errorMsg,
   name,
   handleBlur,
+  refEl,
 }) {
   return (
     <div>
       <input
         className={`${errorMsg ? "inputRedBorder" : ""}`}
         type={type}
+        ref={refEl}
         name={name}
         placeholder={placeholder || " "}
         onChange={handleChange}
