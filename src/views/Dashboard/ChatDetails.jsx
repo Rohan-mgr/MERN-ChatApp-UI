@@ -14,8 +14,6 @@ function ChatDetails() {
   const chatDetailsRef = useRef(null);
   const {state} = useLocation();
 
-  console.log(state, "state in chat details")
-
   const handleClose = () => setShowProfileModal(false);
   const handleShow = () => setShowProfileModal(true);
 
@@ -35,7 +33,7 @@ function ChatDetails() {
       <div className="chat__details" ref={chatDetailsRef}>
         {showProfileModal && <UploadProfileModal show={showProfileModal} handleProfileModal={handleClose} userId={state?.userId} />}
         <div className="chat__details__profile__container" onClick={handleShow}>
-          <Avatar name={state?.name} size={160} user={state?.user}/>
+          <Avatar name={state?.name} size={160} />
           {!state?.isGroupChat && <div className="profile__camera__icon__wrapper">
             <FaCamera className="profile__camera__icon"/>
           </div>}

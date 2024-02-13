@@ -11,10 +11,12 @@ import { searchUsers } from "../../services/user";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Modal from "../../components/common/Modal";
 import { SocketContext } from "../../context/socket.context";
+// import { ChatContext } from "../../context/chat.context";
 
 function SideNav() {
   const navigate = useNavigate();
   const {socket} = useContext(SocketContext);
+  // const {selectedUser, setSelectedUser} = useContext(ChatContext);
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -53,12 +55,12 @@ function SideNav() {
     }
   };
 
-  const handleSearchedUserClick = async (userId, userFullName, user) => {
+  const handleSearchedUserClick = async (userId, userFullName) => {
     try {
       const response = await startChat(userId);
       console.log(response, "response searched user click");
       navigate(`/chat/${response?.data?._id}`, {
-        state: {name: userFullName, userId, user},
+        state: {name: userFullName, userId},
       });
       setChats((prevState) => {
         return [response?.data, ...prevState];
@@ -115,14 +117,15 @@ function SideNav() {
               let name = chat?.isGroupChat
                 ? chat?.groupName
                 : chat?.users[toggleUser]?.fullName;
-              let chatUser = chat?.users[toggleUser];
+              // let chatUser = chat?.users[toggleUser];
               return (
                 <NameInitials
                   key={chat?._id}
                   handleClick={() => {
                     // setSelectedChat(chat);
+                    // setSelectedUser(chatUser);
                     navigate(`chat/${chat?._id}`, {
-                      state: {name: name, isGroupChat: chat?.isGroupChat, userId: chatUserId, user: chatUser}
+                      state: {name: name, isGroupChat: chat?.isGroupChat, userId: chatUserId}
                     });
                   }}
                   name={name}
@@ -144,7 +147,7 @@ function SideNav() {
               <NameInitials
                 key={user?._id}
                 handleClick={() => {
-                  handleSearchedUserClick(user?._id, user?.fullName, user);
+                  handleSearchedUserClick(user?._id, user?.fullName);
                   formik.values.search = "";
                   setShowSearch(false);
                 }}

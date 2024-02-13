@@ -19,12 +19,12 @@ export default function RoomModal({ show, handleClose }) {
   const { socket } = useContext(SocketContext);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [groupChatUsers, setGroupChatUsers] = useState([]);
   const [roomName, setRoomName] = useState("");
 
   useEffect(() => {
     setSearchedUsers([]);
-    setSelectedUsers([]);
+    setGroupChatUsers([]);
   }, []);
   const formik = useFormik({
     initialValues: {
@@ -55,21 +55,21 @@ export default function RoomModal({ show, handleClose }) {
   };
 
   const handleUserClick = (user) => {
-    setSelectedUsers((prevState) => {
+    setGroupChatUsers((prevState) => {
       return [...prevState, user];
     });
     setShowSearch(false);
   };
 
   const handleRoomUserRemoval = (userId) => {
-    const updatedUsers = selectedUsers.filter(user => user?._id !== userId); 
-    setSelectedUsers(updatedUsers);
+    const updatedUsers = groupChatUsers.filter(user => user?._id !== userId); 
+    setGroupChatUsers(updatedUsers);
   }
 
   const handleCreateRoom = async () => {
     try {
       const uniqueRoomId = uuidv4();
-      const response = await createGroupChat(roomName, uniqueRoomId, selectedUsers);
+      const response = await createGroupChat(roomName, uniqueRoomId, groupChatUsers);
       console.log(response, "create room >>>>>>>>>>>>>>>>>>>>>>", roomName, uniqueRoomId);
       navigate(`/chat/${response?.data?._id}`, {
         state: {name: roomName, isGroupChat: response?.data?.isGroupChat},
@@ -101,8 +101,8 @@ export default function RoomModal({ show, handleClose }) {
           onChange={(e) => setRoomName(e.target.value)}
         />
         <div className="selected__users">
-          {selectedUsers.length > 0 &&
-            selectedUsers.map((user) => <p key={user?._id}>{user?.fullName} <span onClick={() => handleRoomUserRemoval(user?._id)}>x</span></p>)}
+          {groupChatUsers.length > 0 &&
+            groupChatUsers.map((user) => <p key={user?._id}>{user?.fullName} <span onClick={() => handleRoomUserRemoval(user?._id)}>x</span></p>)}
         </div>
         <div className="side__nav__search">
           <form onSubmit={formik.handleSubmit}>

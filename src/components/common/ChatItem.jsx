@@ -4,7 +4,6 @@ import Avatar from "./Avatar";
 
 
 export default function ChatItem({ children, name, isSender }) {
-  console.log(isSender)
   return (
     <div className="chat__item">
       {!isSender && <Avatar name={name} />}

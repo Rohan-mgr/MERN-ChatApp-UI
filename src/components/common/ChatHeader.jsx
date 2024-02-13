@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { FiMoreHorizontal } from "react-icons/fi";
 
 
-export default function ChatHeader({ username }) {
+export default function ChatHeader({ username}) {
   const {setShowChatDetails} = useContext(ChatContext);
   return (
     <div className="chat__header">
