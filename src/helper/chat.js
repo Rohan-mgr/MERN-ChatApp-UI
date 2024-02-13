@@ -1,4 +1,3 @@
-
 export const isSameSender = (messages, i, userId) => {
   return (
     i > 0 && // Check if i is greater than 0 to avoid negative index
@@ -12,4 +11,10 @@ export const isLastMessage = (messages, i, userId) => {
     i === messages.length - 1 && // Check if it's the last message
     messages[i].sender._id !== userId
   );
+};
+
+export const filterMessages = (messages, types = []) => {
+  let attachmentMsg = messages.filter((m) => m?.attachment !== null);
+  let mediaFilesCollection = attachmentMsg.filter((m) => types.includes(m?.attachment?.type));
+  return mediaFilesCollection;
 };

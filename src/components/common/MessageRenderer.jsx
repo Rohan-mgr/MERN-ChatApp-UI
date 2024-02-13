@@ -3,6 +3,7 @@ import ChatItem from "./ChatItem";
 import { PiFilesFill } from "react-icons/pi";
 
 const RenderMsg = ({msg, user}) => { 
+    let mediaTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/octet-stream', 'image/gif'];
     let attachment  = msg?.attachment;
     return <React.Fragment>
         {msg?.content && <ChatItem
@@ -18,7 +19,7 @@ const RenderMsg = ({msg, user}) => {
           name={msg?.sender?.fullName}
           isSender={user?._id === msg?.sender?._id ? true : false}
         >
-          {attachment?.type.split("/")[0] === "image" ? <div className="chat__item__image__wrapper"><img src={attachment?.fileUrl} alt={attachment?.name} /></div> : <a href={attachment?.fileUrl} target="_blank" rel="noreferrer"><span className="msg__file__icon"><PiFilesFill /></span> {attachment?.name}</a>}
+          {mediaTypes.includes(attachment?.type) ? <div className="chat__item__image__wrapper"><img src={attachment?.fileUrl} alt={attachment?.name} /></div> : <a href={attachment?.fileUrl} target="_blank" rel="noreferrer"><span className="msg__file__icon"><PiFilesFill /></span> {attachment?.name}</a>}
         </ChatItem>}
     </React.Fragment>
 }

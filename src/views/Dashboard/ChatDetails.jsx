@@ -6,26 +6,30 @@ import Avatar from "../../components/common/Avatar";
 import { MdOutlineKeyboardArrowRight, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { FaCamera } from "react-icons/fa";
 import UploadProfileModal from "../../components/common/UploadProfileModal";
+import { SocketContext } from "../../context/socket.context";
+import MediaDetails from "../../components/common/MediaDetails";
 
 
 function ChatDetails() {
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const { messages } = useContext(SocketContext);
   const { showChatDetails } = useContext(ChatContext);
   const chatDetailsRef = useRef(null);
   const {state} = useLocation();
 
   const handleClose = () => setShowProfileModal(false);
   const handleShow = () => setShowProfileModal(true);
+  console.log(messages, "chat details")
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [expandableOpen, setExpandableOpen] = useState(false);
+  const [mediaDropdown, setMediaDropdown] = useState(false);
+  const [filesDropdown, setFilesDropdown] = useState(false);
 
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+    setMediaDropdown(!mediaDropdown);
   };
 
   const toggleExpandable = () => {
-    setExpandableOpen(!expandableOpen);
+    setFilesDropdown(!filesDropdown);
   };
 
   return (
@@ -45,28 +49,24 @@ function ChatDetails() {
           <div className="chat__details__side-nav">
             <div className="chat__details__side-nav__nav-item">
               <div className="nav-label" onClick={toggleDropdown}>
-                Services
-                {/* <i className={`fas fa-chevron-${dropdownOpen ? "up" : "down"}`}></i> */}
-                {dropdownOpen ? <MdOutlineKeyboardArrowDown /> : <MdOutlineKeyboardArrowRight />}
+                Media & Photos
+                {mediaDropdown ? <MdOutlineKeyboardArrowDown /> : <MdOutlineKeyboardArrowRight />}
               </div>
-              {dropdownOpen && (
-                <div className="dropdown-content">
-                  <a href="#">Service 1</a>
-                  <a href="#">Service 2</a>
-                  <a href="#">Service 3</a>
+              {mediaDropdown && (
+                <div className="dropdown">
+                  <MediaDetails messages={messages} mediaType="photos" />
                 </div>
               )}
             </div>
             <div className="chat__details__side-nav__nav-item">
               <div className="nav-label expandable" onClick={toggleExpandable}>
-                Products
-                {expandableOpen ? <MdOutlineKeyboardArrowDown /> : <MdOutlineKeyboardArrowRight />}
+                Files
+                {filesDropdown ? <MdOutlineKeyboardArrowDown /> : <MdOutlineKeyboardArrowRight />}
               </div>
-              {expandableOpen && (
-                <div className="expandable-content">
-                  <a href="#">Product 1</a>
-                  <a href="#">Product 2</a>
-                  <a href="#">Product 3</a>
+              {filesDropdown && (
+                <div className="dropdown">
+                    <MediaDetails messages={messages} mediaType="files" />
+
                 </div>
               )}
             </div>

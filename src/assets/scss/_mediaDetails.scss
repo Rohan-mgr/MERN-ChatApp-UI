@@ -1,0 +1,43 @@
+.media__details {
+    p{
+        font-size: .8rem; 
+        text-align: center;
+        width:100%;
+    }
+    .media__photos {
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 10px;
+        padding: 5px 0; 
+    }
+
+    .media__files {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 5px;
+
+        a {
+            color: #000;
+            padding: 8px 10px; 
+            background-color: #f1efef;
+            border-radius: 7px;
+        }
+
+        a:hover {
+            color: #0275d8;
+            background-color: #fff;
+        }
+    }
+
+    img {
+        width: 70px; 
+        height: 70px;
+        border-radius: 7px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    img:hover {
+        transform: scale(1.1);
+    }
+}
