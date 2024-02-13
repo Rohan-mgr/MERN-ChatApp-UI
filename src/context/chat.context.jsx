@@ -8,12 +8,13 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 export const ChatContextProvider = (props) => {
+  const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState({});
   const [selectedUser, setSelectedUser] = useState({});
-  console.log(selectedChat, "selectedChat");
+  const [showChatDetails, setShowChatDetails] = useState(false);
 
   return (
-    <ChatContext.Provider value={{ selectedChat, setSelectedChat, selectedUser, setSelectedUser }}>
+    <ChatContext.Provider value={{ selectedChat, setSelectedChat, selectedUser, setSelectedUser, showChatDetails, setShowChatDetails, chats, setChats }}>
       {props.children}
     </ChatContext.Provider>
   );

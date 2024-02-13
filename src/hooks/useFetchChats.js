@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { fetchChats } from "../services/chat";
+import { ChatContext } from "../context/chat.context";
 
 function useFetchChats() {
-  const [chats, setChats] = useState([]);
+  // const [chats, setChats] = useState([]);
+  const { chats, setChats } = useContext(ChatContext);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -18,7 +20,7 @@ function useFetchChats() {
       }
     };
     getAllChats();
-  }, []);
+  }, [setChats]);
 
   return { isLoading, chats, setChats };
 }

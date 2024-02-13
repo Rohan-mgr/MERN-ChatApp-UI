@@ -1,15 +1,15 @@
 import nameInitials from "name-initials";
-// import fbImg from "../../assets/images/fb.jpg";
 import PropTypes from "prop-types";
 
 
-function Avatar({name, isSender}) {
+function Avatar({name, size, user}) {
+  console.log(user?.profileUrl);
   return (
-    <div className="avatar" style={isSender ? {marginLeft: '-12px'}:{marginRight: '-12px'}}>
-        <span>{nameInitials(name)}</span>
+    <div className="avatar" style={{margin: "7px -12px 0", width: `${size || 30}px`, height: `${size || 30}px`}}>
+        {/* <span style={{fontSize:`${size && size/2.5}px`}}>{nameInitials(name)}</span> */}
 
         {/* conditionally render user image or default avatar */}
-        {/* {true ? <span>{nameInitials(name)}</span> : <img src={fbImg} style={{width: '30px', height: '30px'}}/> } */}
+        {user?.profileUrl !== null ? <span style={{fontSize:`${size && size/2.5}px`}}>{nameInitials(name)}</span> : <img src={user?.profileUrl} style={{width: '30px', height: '30px'}}/> }
       </div>
   )
 }

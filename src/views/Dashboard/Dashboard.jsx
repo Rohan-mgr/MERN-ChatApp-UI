@@ -3,7 +3,9 @@ import SideNav from "./SideNav";
 import { useParams } from "react-router-dom";
 import Main from "./Main";
 import { SocketContextProvider } from "../../context/socket.context";
+import { ChatContextProvider } from "../../context/chat.context";
 import { _getSecureLs } from "../../utils/storage";
+import ChatDetails from "./ChatDetails";
 
 
 function App() {
@@ -18,8 +20,11 @@ function App() {
         token={import.meta.env.VITE_SOCKET_TOKEN}
         user={user}
       >
-        <SideNav />
-        <Main />
+        <ChatContextProvider>
+          <SideNav />
+          <Main />
+          <ChatDetails />
+        </ChatContextProvider>
       </SocketContextProvider>
     </div>
   );

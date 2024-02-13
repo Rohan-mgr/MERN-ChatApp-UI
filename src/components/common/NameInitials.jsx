@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import nameInitials from "name-initials";
+// import nameInitials from "name-initials";
 import PropTypes from "prop-types";
 import { fetchMessages } from "../../services/chat";
+import Avatar from "./Avatar";
 
 function NameInitials({ name, userId, handleClick, chatId, isHeading, socket }) {
   const [isLoading, setIsLoading ] = useState(false);
@@ -44,16 +45,16 @@ function NameInitials({ name, userId, handleClick, chatId, isHeading, socket }) 
       })
     })
   }, [chatId === latestMsg?.chat?._id]);
-  console.log(latestMsg,chatId === latestMsg?.chat?._id, "data with socket")
 
   return (
     <div className="name__initials" onClick={handleClick || null}>
       <div className="name__initials__wrapper">
-        <span>{nameInitials(name)}</span>
+        {/* <span>{nameInitials(name)}</span> */}
+        <Avatar name={name} size={58} />
       </div>
       <div className="name__initials__content">
         <p>{name}</p>
-        {isHeading && (isLoading ? <span>Loading...</span> : (latestMsg && chatId === latestMsg?.chat?._id && <span>{userId === latestMsg?.sender?._id ? <strong>You: </strong>: (<strong>{latestMsg && latestMsg?.chat?.isGroupChat && `${latestMsg?.sender?.fullName.split(" ")[0]}: `}</strong>)}{latestMsg?.content}</span>))}
+        {isHeading && (isLoading ? <span>Loading...</span> : (latestMsg && chatId === latestMsg?.chat?._id && <span>{userId === latestMsg?.sender?._id ? <strong>You: </strong>: (<strong>{latestMsg && latestMsg?.chat?.isGroupChat && `${latestMsg?.sender?.fullName.split(" ")[0]}: `}</strong>)}{(latestMsg?.content == "" && latestMsg?.attachment) ? "Sent an attachment" : latestMsg?.content}</span>))}
       </div>
     </div>
   );

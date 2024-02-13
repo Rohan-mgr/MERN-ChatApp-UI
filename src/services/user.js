@@ -22,3 +22,11 @@ export const userLogin = async (credentials) => {
   const response = await http.post(URL, credentials);
   return response;
 };
+export const updateUserProfile = async (data) => {
+  const URL = userEndpoints.updateProfile;
+  const formData = new FormData();
+  formData.append("userId", data?.userId);
+  formData.append("profile", data?.file);
+  const response = await http.post(URL, formData);
+  return response;
+};

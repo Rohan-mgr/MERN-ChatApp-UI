@@ -7,9 +7,9 @@ export default function ChatItem({ children, name, isSender }) {
   console.log(isSender)
   return (
     <div className="chat__item">
-      {!isSender && <Avatar name={name} isSender={isSender}/>}
+      {!isSender && <Avatar name={name} />}
       <div className={`chat__item__content ${isSender && "isSender"}`}>{children}</div>
-      {isSender && <Avatar name={name} isSender={isSender} />}
+      {isSender && <Avatar name={name} />}
     </div>
   );
 }

@@ -5,13 +5,13 @@ import { PiFilesFill } from "react-icons/pi";
 const RenderMsg = ({msg, user}) => { 
     let attachment  = msg?.attachment;
     return <React.Fragment>
-        <ChatItem
+        {msg?.content && <ChatItem
             key={msg?._id}
             name={msg?.sender?.fullName}
             isSender={user?._id === msg?.sender?._id ? true : false}
           >
             {msg?.content}
-        </ChatItem>
+        </ChatItem>}
 
         {attachment &&  <ChatItem
           key={msg?._id + attachment?.name}

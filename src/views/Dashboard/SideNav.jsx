@@ -24,6 +24,7 @@ function SideNav() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -52,12 +53,12 @@ function SideNav() {
     }
   };
 
-  const handleSearchedUserClick = async (userId, userFullName) => {
+  const handleSearchedUserClick = async (userId, userFullName, user) => {
     try {
       const response = await startChat(userId);
       console.log(response, "response searched user click");
       navigate(`/chat/${response?.data?._id}`, {
-        state: userFullName,
+        state: {name: userFullName, userId, user},
       });
       setChats((prevState) => {
         return [response?.data, ...prevState];
@@ -72,6 +73,7 @@ function SideNav() {
     _remove("auth");
     navigate("/");
   };
+
   return (
     <div className="side__nav">
       <Modal show={show} handleClose={handleClose} />
@@ -108,17 +110,19 @@ function SideNav() {
             <ScaleLoader color="#0D6EFD" style={{ textAlign: "center" }} />
           ) : chats?.length > 0 ? (
             chats?.map((chat) => {
+              let chatUserId = chat?.users[0]?._id;
               let toggleUser = chat.users[0]?._id === user?._id ? 1 : 0;
               let name = chat?.isGroupChat
                 ? chat?.groupName
                 : chat?.users[toggleUser]?.fullName;
+              let chatUser = chat?.users[toggleUser];
               return (
                 <NameInitials
                   key={chat?._id}
                   handleClick={() => {
                     // setSelectedChat(chat);
                     navigate(`chat/${chat?._id}`, {
-                      state: name,
+                      state: {name: name, isGroupChat: chat?.isGroupChat, userId: chatUserId, user: chatUser}
                     });
                   }}
                   name={name}
@@ -140,7 +144,7 @@ function SideNav() {
               <NameInitials
                 key={user?._id}
                 handleClick={() => {
-                  handleSearchedUserClick(user?._id, user?.fullName);
+                  handleSearchedUserClick(user?._id, user?.fullName, user);
                   formik.values.search = "";
                   setShowSearch(false);
                 }}

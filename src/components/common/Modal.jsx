@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useFormik } from "formik";
@@ -8,8 +9,13 @@ import { SocketContext } from "../../context/socket.context";
 import { createGroupChat } from "../../services/chat";
 import PropTypes from "prop-types";
 import { v4 as uuidv4 } from 'uuid';
+import useFetchChats from "../../hooks/useFetchChats";
+  
+
 
 export default function RoomModal({ show, handleClose }) {
+  const navigate = useNavigate();
+  const { setChats } = useFetchChats();
   const { socket } = useContext(SocketContext);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
@@ -41,7 +47,6 @@ export default function RoomModal({ show, handleClose }) {
     }
     try {
       const response = await searchUsers(searchValue);
-      console.log(response);
       setSearchedUsers(response?.data?.users);
     } catch (error) {
       console.log(error);
@@ -66,6 +71,12 @@ export default function RoomModal({ show, handleClose }) {
       const uniqueRoomId = uuidv4();
       const response = await createGroupChat(roomName, uniqueRoomId, selectedUsers);
       console.log(response, "create room >>>>>>>>>>>>>>>>>>>>>>", roomName, uniqueRoomId);
+      navigate(`/chat/${response?.data?._id}`, {
+        state: {name: roomName, isGroupChat: response?.data?.isGroupChat},
+      });
+      setChats((prevState) => {
+        return [response?.data, ...prevState];
+      });
     } catch (error) {
       console.log(error);
       throw error;
@@ -73,7 +84,7 @@ export default function RoomModal({ show, handleClose }) {
     socket.emit("create", roomName);
     handleClose();
   };
-console.log(selectedUsers);
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
