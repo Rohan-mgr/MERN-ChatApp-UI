@@ -12,9 +12,11 @@ export const fetchAllUsers = async () => {
   const response = await http.get(URL);
   return response;
 };
-export const userRegistration = async (credentials) => {
+export const userRegistration = async (credentials, imgFile) => {
   const URL = userEndpoints.signup;
-  const response = await http.post(URL, credentials);
+  const data = { ...credentials, profile: imgFile };
+  console.log(URL, data, "credentials>>>>");
+  const response = await http.post(URL, data);
   return response;
 };
 export const userLogin = async (credentials) => {

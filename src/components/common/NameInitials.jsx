@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { fetchMessages } from "../../services/chat";
 import Avatar from "./Avatar";
 
-function NameInitials({ name, userId, handleClick, chatId, isHeading, socket }) {
+function NameInitials({ name, userId, handleClick, chatId, isHeading, socket, profile = null }) {
   const [isLoading, setIsLoading ] = useState(false);
   const [latestMsg, setLatestMsg] = useState({});
 
@@ -50,7 +50,7 @@ function NameInitials({ name, userId, handleClick, chatId, isHeading, socket }) 
     <div className="name__initials" onClick={handleClick || null}>
       <div className="name__initials__wrapper">
         {/* <span>{nameInitials(name)}</span> */}
-        <Avatar name={name} size={58} />
+        <Avatar name={name} size={58} profile={profile}/>
       </div>
       <div className="name__initials__content">
         <p>{name}</p>

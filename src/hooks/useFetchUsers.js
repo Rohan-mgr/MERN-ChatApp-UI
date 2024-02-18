@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { fetchAllUsers } from "../services/user";
+import { ChatContext } from "../context/chat.context";
 
 function useFetchUsers() {
-  const [users, setUsers] = useState([]);
+  const { users, setUsers } = useContext(ChatContext);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ function useFetchUsers() {
       }
     };
     fetchUser();
-  }, []);
+  }, [setUsers]);
 
   return { isLoading, users, setUsers };
 }

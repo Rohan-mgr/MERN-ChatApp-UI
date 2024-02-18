@@ -4,7 +4,7 @@ import { ChatContext } from "../context/chat.context";
 
 function useFetchChats() {
   // const [chats, setChats] = useState([]);
-  const { chats, setChats } = useContext(ChatContext);
+  const { chats, setChats, recentUpdatedUser } = useContext(ChatContext);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function useFetchChats() {
       }
     };
     getAllChats();
-  }, [setChats]);
+  }, [recentUpdatedUser, setChats]);
 
   return { isLoading, chats, setChats };
 }
