@@ -10,7 +10,8 @@ export const userEndpoints = {
 };
 
 export const chatEndpoints = {
-  chats: config.baseURL + "/api/chat",
+  fetchAllChats: config.baseURL + "/api/chat/all",
+  startChat: config.baseURL + "/api/chat",
   sendMessage: config.baseURL + "/api/message",
   fetchMessages: config.baseURL + "/api/message",
   fetchAllMessages: config.baseURL + "/api/message/allMessages",

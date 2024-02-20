@@ -12,11 +12,15 @@ import Alert from "../components/common/Alert";
 import { userRegistration, userLogin } from "../services/user";
 import { useNavigate } from "react-router-dom";
 import { _setSecureLs } from "../utils/storage";
+import useFetchChats from "../hooks/useFetchChats";
+import { _setCookie, _removeCookie } from "../utils/cookies";
 
 function Home() {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [formState, setFormState] = useState(false);
+  const { chats } = useFetchChats();
+  console.log(chats, "home >>>>");
   const [alert, setAlert] = useState({
     status: false,
     title: "",
@@ -56,6 +60,7 @@ function Home() {
           type: "success",
         };
       });
+      _removeCookie("loggedInUser");
       setFormState(false);
     } catch (error) {
       setAlert((prevState) => {
@@ -83,11 +88,27 @@ function Home() {
           type: "success",
         };
       });
+      let user = response?.data?.loggedInUser;
       _setSecureLs("auth", {
-        user: response?.data?.loggedInUser,
+        user,
         token: response?.data?.token,
       });
-      navigate("chat/1");
+      _setCookie("loggedInUser", user, 365 * 100);
+
+      if (chats?.length > 0) {
+        let toggleUser = chats[0].users[0]?._id === user?._id ? 1 : 0;
+        let latestChatUser = chats[0]?.users[toggleUser];
+        navigate(`chat/${chats[0]?._id}`, {
+          state: {
+            name: latestChatUser?.fullName,
+            isGroupChat: chats[0]?.isGroupChat,
+            userId: latestChatUser?._id,
+            profile: latestChatUser?.profileUrl,
+          },
+        });
+      } else {
+        navigate("chat/1");
+      }
     } catch (error) {
       setAlert((prevState) => {
         return {

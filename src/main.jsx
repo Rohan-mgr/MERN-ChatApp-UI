@@ -1,13 +1,11 @@
 import "./assets/scss/style.scss";
 import ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./views/Home";
 import Dashboard from "./views/Dashboard/Dashboard";
 import Chat from "./views/Dashboard/Chat";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import { ChatContextProvider } from "./context/chat.context";
 // import ChatState from "./context/ChatState";
 // import { SocketContextProvider } from "./context/socket.context";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -16,7 +14,11 @@ import React from "react";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <ChatContextProvider>
+        <Home />
+      </ChatContextProvider>
+    ),
   },
   {
     element: (
