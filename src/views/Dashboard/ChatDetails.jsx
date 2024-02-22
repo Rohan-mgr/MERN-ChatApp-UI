@@ -5,16 +5,18 @@ import { CSSTransition } from "react-transition-group";
 import Avatar from "../../components/common/Avatar";
 import { MdOutlineKeyboardArrowRight, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { SocketContext } from "../../context/socket.context";
+import NameInitials from "../../components/common/NameInitials";
 import MediaDetails from "../../components/common/MediaDetails";
 
 function ChatDetails() {
   const { messages } = useContext(SocketContext);
-  const { showChatDetails } = useContext(ChatContext);
+  const { showChatDetails, handleSearchedUserClick } = useContext(ChatContext);
   const chatDetailsRef = useRef(null);
   const { state } = useLocation();
 
   const [mediaDropdown, setMediaDropdown] = useState(false);
   const [filesDropdown, setFilesDropdown] = useState(false);
+  const [membersDropdown, setMembersDropdown] = useState(false);
 
   const toggleDropdown = () => {
     setMediaDropdown(!mediaDropdown);
@@ -24,12 +26,37 @@ function ChatDetails() {
     setFilesDropdown(!filesDropdown);
   };
 
+  const toggleMembersDropdown = () => {
+    setMembersDropdown(!membersDropdown);
+  };
+
   return (
     <CSSTransition in={showChatDetails} nodeRef={chatDetailsRef} timeout={500} classNames="signup-field" unmountOnExit>
       <div className="chat__details" ref={chatDetailsRef}>
         <div className="chat__details__profile__container">
-          <Avatar name={state?.name} size={160} profile={state?.profile} />
-          <p>{state?.name}</p>
+          {!state?.isGroupChat ? (
+            <Avatar name={state?.name} size={160} profile={state?.profile} isGroupChat={state?.isGroupChat} />
+          ) : (
+            <div className="chat__details__profile__container__group">
+              {state?.chat?.users.slice(0, 2).map((user) => {
+                return <Avatar key={user?._id} name={user?.fullName} size={75} profile={user?.profileUrl} />;
+              })}
+              {state?.chat?.users?.length > 2 && (
+                <div className="chat__details__profile__container__group__others">
+                  {state?.chat?.users?.length - 2}+
+                </div>
+              )}
+            </div>
+          )}
+
+          <p>
+            {state?.name
+              ? state?.name
+              : state?.chat?.users
+                  .slice(0, 3)
+                  ?.map((user) => user.fullName.split(" ")[0])
+                  .join(", ") + ", ..."}
+          </p>
         </div>
 
         <div className="chat__details__navigation">
@@ -45,6 +72,7 @@ function ChatDetails() {
                 </div>
               )}
             </div>
+
             <div className="chat__details__side-nav__nav-item">
               <div className="nav-label expandable" onClick={toggleExpandable}>
                 Files
@@ -56,6 +84,31 @@ function ChatDetails() {
                 </div>
               )}
             </div>
+
+            {state?.isGroupChat && (
+              <div className="chat__details__side-nav__nav-item">
+                <div className="nav-label" onClick={toggleMembersDropdown}>
+                  Chat Members
+                  {membersDropdown ? <MdOutlineKeyboardArrowDown /> : <MdOutlineKeyboardArrowRight />}
+                </div>
+                {membersDropdown && (
+                  <div className="dropdown">
+                    {state?.chat?.users?.map((user) => {
+                      return (
+                        <NameInitials
+                          key={user?._id}
+                          handleClick={() => {
+                            handleSearchedUserClick(user?._id, user?.fullName, user?.profileUrl, user?.isGroupChat);
+                          }}
+                          name={user?.fullName}
+                          profile={user?.profileUrl}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

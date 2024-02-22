@@ -1,77 +1,138 @@
+@use "./utils" as u;
 
 .chat__details {
-    width: 23rem; 
-    display: flex;
-    flex-direction: column;
-    padding-top: 3rem;
-    margin: 0 auto; 
+  width: 23rem;
+  display: flex;
+  flex-direction: column;
+  padding-top: 3rem;
+  margin: 0 auto;
+  height: 100vh;
 
-    &__profile__container{
+  &__navigation {
+    overflow-y: scroll;
+    padding-top: 5px;
+  }
+
+  &__profile__container {
+    box-shadow: 0 0.5px 1px #add1f0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+
+    .profile__camera__icon__wrapper {
+      cursor: pointer;
+      position: absolute;
+      bottom: 80px;
+      left: 230px;
+      background-color: #fff;
+      display: grid;
+      place-items: center;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 2px solid #0275d8;
+
+      .profile__camera__icon {
+        font-size: 1.2rem;
+        color: #0275d8;
+      }
+    }
+
+    p {
+      text-align: center;
+      margin-top: 10px;
+      color: #0275d8;
+      font-weight: 600;
+    }
+
+    &__group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      width: 160px;
+      height: 160px;
+      background-color: #edecec;
+      border-radius: 50%;
+
+      div {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      div:nth-child(1) {
+        left: 42%;
+        transform: translate(-60%, -42%);
+      }
+
+      div:nth-child(2) {
+        right: 60%;
+        transform: translate(72%, -106%);
+      }
+      div:last-child {
+        right: 60%;
+        z-index: -1;
+        transform: translate(109%, -19%);
+
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        min-width: u.rem(30);
+        clip-path: circle(calc(87% - 1.9rem));
+        border: 2px solid #fff;
+        overflow: hidden;
+        background-color: rgb(127, 127, 203);
+        color: #fff;
+        font-size: 0.7rem;
+      }
+
+      &__others {
+        width: 75px !important;
+        height: 75px !important;
+        z-index: 1 !important;
+        font-size: 1.3rem !important;
+      }
+    }
+  }
+
+  &__side-nav {
+    height: 100%;
+    width: 100%;
+
+    &__nav-item {
+      position: relative;
+      margin: 0 8px;
+      cursor: pointer;
+      border-radius: 7px;
+      transition: all 0.4s ease-in-out;
+
+      &:hover {
+        background-color: #eeeded;
+      }
+
+      .nav-label {
+        font-weight: 500;
+        padding: 10px 5px;
+        cursor: pointer;
         display: flex;
         align-items: center;
-        flex-direction: column;
-        position: relative;
+        justify-content: space-between;
 
-        .profile__camera__icon__wrapper {
-            cursor: pointer;
-            position: absolute;
-            bottom: 80px; 
-            left: 230px;
-            background-color: #fff;
-            display: grid; 
-            place-items: center;
-            width: 35px;
-            height: 35px; 
-            border-radius: 50%;
-            border: 2px solid #0275d8;
-
-            .profile__camera__icon {
-                font-size: 1.2rem;
-                color: #0275d8;
-            }
+        svg {
+          font-size: 1.5rem;
+          margin-left: 10px;
         }
+      }
 
-
-        p {
-            text-align: center;
-            margin-top: 10px;
-            color: #0275d8;
-            font-weight: 600;
-        }
+      .dropdown {
+        padding-left: 20px;
+      }
     }
-
-    &__side-nav {
-        height: 100%;
-        width: 100%;
-
-        &__nav-item {
-            position: relative;
-            margin: 0 8px;
-            cursor: pointer;     
-            border-radius: 7px;
-            transition: all 0.4s ease-in-out;
-
-            &:hover {
-                background-color: #eeeded;
-            }
-
-            .nav-label {
-                font-weight: 500;
-                padding: 10px 5px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-                svg {
-                    font-size: 1.5rem;
-                    margin-left: 10px;
-                }
-            }
-
-            .dropdown {
-                padding-left: 20px;
-            }
-        }
-    }
+  }
 }

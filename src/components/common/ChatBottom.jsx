@@ -10,13 +10,12 @@ import Spinner from "react-bootstrap/Spinner";
 import { CgCloseO } from "react-icons/cg";
 import { CgAttachment } from "react-icons/cg";
 
-
 export default function ChatBottom() {
   const { socket } = useContext(SocketContext);
   const { chatId } = useParams();
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const messageInputElement = useRef(); 
+  const messageInputElement = useRef();
 
   const formik = useFormik({
     initialValues: {
@@ -33,9 +32,7 @@ export default function ChatBottom() {
         fileType: selectedFile?.type || null,
         chatId,
       };
-      console.log(payload, "payload submit>>>>>>>>>")
       try {
-        console.log(values, "values")
         socket.emit("message:sent", payload);
         // const response = await sendMessage(payload);
         // console.log(response, 'response >>>>>>>>>>>');
@@ -54,21 +51,21 @@ export default function ChatBottom() {
     const fileInput = event.currentTarget;
     const file = fileInput.files[0];
     setSelectedFile(file);
-    if(event.currentTarget.files[0]) {
+    if (event.currentTarget.files[0]) {
       messageInputElement.current.focus();
     }
-    event.target.value =  null;
+    event.target.value = null;
   };
   const handleFileDeselect = () => {
     setSelectedFile(null);
   };
-  
+
   return (
     <div className="chat__bottom">
       <form autoComplete="off" onSubmit={formik.handleSubmit} encType="multipart/form-data">
         <div className="chat__bottom__input">
           <label>
-            <input type="file" onChange={handleFileChange}/>
+            <input type="file" onChange={handleFileChange} />
             <span>+</span>
           </label>
           <InputField
@@ -82,27 +79,25 @@ export default function ChatBottom() {
           />
         </div>
         {selectedFile && (
-        <div className="selected__file">
-          <div className="image__wrapper" style={{maxWidth: selectedFile?.type.split("/")[0] === "image" ? "80px": "auto"}}>
-            {selectedFile?.type.split("/")[0] === "image" ?
-             <img
-                src={URL.createObjectURL(selectedFile)}
-                alt={selectedFile.name}
-              /> 
-              : 
-             <p className="attachment__wrapper"><CgAttachment className="attachment__icon" /> {selectedFile?.name}</p>
-              }
-            <CgCloseO onClick={handleFileDeselect} className="image__deselect"/>
+          <div className="selected__file">
+            <div
+              className="image__wrapper"
+              style={{ maxWidth: selectedFile?.type.split("/")[0] === "image" ? "80px" : "auto" }}
+            >
+              {selectedFile?.type.split("/")[0] === "image" ? (
+                <img src={URL.createObjectURL(selectedFile)} alt={selectedFile.name} />
+              ) : (
+                <p className="attachment__wrapper">
+                  <CgAttachment className="attachment__icon" /> {selectedFile?.name}
+                </p>
+              )}
+              <CgCloseO onClick={handleFileDeselect} className="image__deselect" />
+            </div>
           </div>
-        </div>
-      )}
+        )}
         <div className="chat__bottom__send">
           <button type="submit">
-            {formik.isSubmitting ? (
-              <Spinner animation="border" variant="primary" />
-            ) : (
-              <BsFillSendFill />
-            )}
+            {formik.isSubmitting ? <Spinner animation="border" variant="primary" /> : <BsFillSendFill />}
           </button>
         </div>
       </form>

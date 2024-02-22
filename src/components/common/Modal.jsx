@@ -8,10 +8,11 @@ import { searchUsers } from "../../services/user";
 import { SocketContext } from "../../context/socket.context";
 import { createGroupChat } from "../../services/chat";
 import PropTypes from "prop-types";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import useFetchChats from "../../hooks/useFetchChats";
-  
-
+import Badge from "react-bootstrap/Badge";
+import { IoCloseCircle } from "react-icons/io5";
+import NameInitials from "./NameInitials";
 
 export default function RoomModal({ show, handleClose }) {
   const navigate = useNavigate();
@@ -62,9 +63,9 @@ export default function RoomModal({ show, handleClose }) {
   };
 
   const handleRoomUserRemoval = (userId) => {
-    const updatedUsers = groupChatUsers.filter(user => user?._id !== userId); 
+    const updatedUsers = groupChatUsers.filter((user) => user?._id !== userId);
     setGroupChatUsers(updatedUsers);
-  }
+  };
 
   const handleCreateRoom = async () => {
     try {
@@ -72,7 +73,7 @@ export default function RoomModal({ show, handleClose }) {
       const response = await createGroupChat(roomName, uniqueRoomId, groupChatUsers);
       console.log(response, "create room >>>>>>>>>>>>>>>>>>>>>>", roomName, uniqueRoomId);
       navigate(`/chat/${response?.data?._id}`, {
-        state: {name: roomName, isGroupChat: response?.data?.isGroupChat},
+        state: { name: response?.data?.groupName, isGroupChat: response?.data?.isGroupChat, chat: response?.data },
       });
       setChats((prevState) => {
         return [response?.data, ...prevState];
@@ -100,10 +101,7 @@ export default function RoomModal({ show, handleClose }) {
           value={roomName}
           onChange={(e) => setRoomName(e.target.value)}
         />
-        <div className="selected__users">
-          {groupChatUsers.length > 0 &&
-            groupChatUsers.map((user) => <p key={user?._id}>{user?.fullName} <span onClick={() => handleRoomUserRemoval(user?._id)}>x</span></p>)}
-        </div>
+
         <div className="side__nav__search">
           <form onSubmit={formik.handleSubmit}>
             <BsSearch />
@@ -121,16 +119,27 @@ export default function RoomModal({ show, handleClose }) {
           </form>
         </div>
 
+        <div className="selected__users">
+          {groupChatUsers.length > 0 &&
+            groupChatUsers.map((user) => (
+              <Badge key={user?._id} id="user__badge">
+                {user?.fullName} <IoCloseCircle onClick={() => handleRoomUserRemoval(user?._id)} />
+              </Badge>
+            ))}
+        </div>
+
         {showSearch && searchedUsers.length > 0 && (
           <div className="searched__users">
             {searchedUsers.map((user) => (
-              <p
+              <NameInitials
                 key={user?._id}
-                style={{ cursor: "pointer" }}
-                onClick={() => {formik.values.search = ""; handleUserClick(user)}}
-              >
-                {user?.fullName}
-              </p>
+                handleClick={() => {
+                  formik.values.search = "";
+                  handleUserClick(user);
+                }}
+                name={user?.fullName}
+                profile={user?.profileUrl}
+              />
             ))}
           </div>
         )}
@@ -148,6 +157,6 @@ export default function RoomModal({ show, handleClose }) {
 }
 
 RoomModal.propTypes = {
-  show: PropTypes.bool, 
-  handleClose: PropTypes.func
-}
+  show: PropTypes.bool,
+  handleClose: PropTypes.func,
+};

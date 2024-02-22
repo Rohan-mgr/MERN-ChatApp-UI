@@ -85,7 +85,7 @@ function UploadProfileModal({ show, handleProfileModal, userId }) {
         <form autoComplete="off" onSubmit={formik.handleSubmit} encType="multipart/form-data">
           <label className="upload__profile__label">
             <input type="file" name="profile" onChange={handleFileChange} accept="image/*" />
-            <span>
+            <span style={{ background: "#0275d8" }}>
               <FaCamera />
             </span>
           </label>

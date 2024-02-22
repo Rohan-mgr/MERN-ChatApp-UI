@@ -10,7 +10,7 @@ function Chat() {
     <div className="chat">
       {chatId !== "1" ? (
         <>
-          <ChatHeader username={state?.name || " "} profile={state?.profile} />
+          <ChatHeader username={state?.name || null} chat={state?.chat} profile={state?.profile} />
           {/* <h2>Name: {state?.fullName}</h2>
           <p>User email: {state?.email}</p>
           <p>User Id: {userId}</p> */}

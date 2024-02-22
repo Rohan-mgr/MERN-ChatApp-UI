@@ -6,21 +6,22 @@ import useFetchChats from "../../hooks/useFetchChats";
 import NameInitials from "../../components/common/NameInitials";
 import { useFormik } from "formik";
 import { BsSearch } from "react-icons/bs";
-import { startChat } from "../../services/chat";
 import { searchUsers } from "../../services/user";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Modal from "../../components/common/Modal";
 import { SocketContext } from "../../context/socket.context";
 import { MdLogout } from "react-icons/md";
 import UploadProfileModal from "../../components/common/UploadProfileModal";
+import { ChatContext } from "../../context/chat.context";
 
 function SideNav() {
   const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
+  const { handleSearchedUserClick } = useContext(ChatContext);
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchedUsers, setSearchedUsers] = useState([]);
-  const { isLoading, chats, setChats } = useFetchChats();
+  const { isLoading, chats } = useFetchChats();
   const { user } = _getSecureLs("auth");
   const [showProfileModal, setShowProfileModal] = useState(false);
 
@@ -49,23 +50,6 @@ function SideNav() {
     try {
       const response = await searchUsers(searchValue);
       setSearchedUsers(response?.data?.users);
-    } catch (error) {
-      console.log(error);
-      throw new Error(error);
-    }
-  };
-
-  const handleSearchedUserClick = async (userId, userFullName, profileUrl, isGroupChat) => {
-    try {
-      console.log(userId, "user id>>");
-      const response = await startChat(userId);
-      console.log(response, "response searched user click");
-      setChats((prevState) => {
-        return [response?.data, ...prevState];
-      });
-      navigate(`/chat/${response?.data?._id}`, {
-        state: { name: userFullName, isGroupChat, userId, profile: profileUrl },
-      });
     } catch (error) {
       console.log(error);
       throw new Error(error);
@@ -128,13 +112,15 @@ function SideNav() {
                         name: name,
                         isGroupChat: chat?.isGroupChat,
                         userId: chatUserId,
+                        chat: chat,
                         profile: chatUser?.profileUrl,
                       },
                     });
                   }}
                   name={name}
                   userId={user?._id}
-                  chatId={chat?._id}
+                  // chatId={chat?._id}
+                  chat={chat}
                   isHeading={true}
                   socket={socket}
                   profile={chatUser?.profileUrl}

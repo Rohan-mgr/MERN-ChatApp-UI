@@ -10,7 +10,9 @@ function Avatar({ name, size, profile = null }) {
       {profile !== null && profile !== undefined ? (
         <img src={profile} alt={name} />
       ) : (
-        <span style={{ fontSize: `${size && size / 2.5}px` }}>{nameInitials(name)}</span>
+        <span className="avatar__name" style={{ fontSize: `${size && size / 2.5}px` }}>
+          {nameInitials(name)}
+        </span>
       )}
     </div>
   );

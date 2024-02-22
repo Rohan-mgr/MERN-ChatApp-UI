@@ -49,6 +49,7 @@
     flex-direction: column;
     height: calc(100vh - u.rem(58) - u.rem(55) - u.rem(56));
     overflow-y: scroll;
+    padding-bottom: 57px;
   }
 
   &__searchedUsers {

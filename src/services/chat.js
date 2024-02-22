@@ -27,7 +27,6 @@ export const sendMessage = async (values) => {
 };
 export const fetchChats = async () => {
   let user = _getCookie("loggedInUser");
-  console.log(user, "LLL");
   const URL = chatEndpoints.fetchAllChats + `/${user?._id ?? 0}`;
   const response = await httpAuth.get(URL);
   return response;

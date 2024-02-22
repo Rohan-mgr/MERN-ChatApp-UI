@@ -20,7 +20,6 @@ function Home() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [formState, setFormState] = useState(false);
   const { chats } = useFetchChats();
-  console.log(chats, "home >>>>");
   const [alert, setAlert] = useState({
     status: false,
     title: "",
@@ -100,9 +99,10 @@ function Home() {
         let latestChatUser = chats[0]?.users[toggleUser];
         navigate(`chat/${chats[0]?._id}`, {
           state: {
-            name: latestChatUser?.fullName,
+            name: chats[0]?.isGroupChat ? chats[0]?.groupName : latestChatUser?.fullName,
             isGroupChat: chats[0]?.isGroupChat,
             userId: latestChatUser?._id,
+            chat: chats[0],
             profile: latestChatUser?.profileUrl,
           },
         });
@@ -125,7 +125,6 @@ function Home() {
   };
 
   const handleFileChange = (event) => {
-    console.log("file changing...");
     const fileInput = event.currentTarget;
     const file = fileInput.files[0];
     setSelectedFile(file);
