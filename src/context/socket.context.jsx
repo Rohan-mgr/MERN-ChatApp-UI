@@ -9,6 +9,7 @@ export const SocketContextProvider = ({ chatId, children, url, token, user }) =>
   const [socket, setSocket] = useState({});
   const [emitters, setEmitters] = useState({});
   const [messages, setMessages] = useState([]);
+  const [activeUsers, setActiveUsers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
 
   function setData(type, data) {
@@ -20,6 +21,9 @@ export const SocketContextProvider = ({ chatId, children, url, token, user }) =>
           return null;
         }
         break;
+
+      case "activeUsers":
+        setActiveUsers((prevState) => [...prevState, data?.activeUsers]);
     }
   }
 
@@ -27,16 +31,17 @@ export const SocketContextProvider = ({ chatId, children, url, token, user }) =>
 
   useEffect(() => {
     const socket = io.connect(url, {
-      query: {token}
+      query: { token },
     });
     setSocket(socket);
 
     socket.on("connect", async () => {
-      socket.emit("user:join", user)
+      socket.emit("user:join", user);
       Object.entries(socketHandlers).forEach(([eventName, listener]) => {
         socket.on(eventName, listener.bind(socket));
       });
-      setEmitters(() => { // prevState: setEmitters((_) => {...})
+      setEmitters(() => {
+        // prevState: setEmitters((_) => {...})
         return new SocketEmitters(socket);
       });
     });
@@ -55,6 +60,7 @@ export const SocketContextProvider = ({ chatId, children, url, token, user }) =>
         setMessages,
         searchedUsers,
         setSearchedUsers,
+        activeUsers,
       }}
     >
       {children}
@@ -63,9 +69,9 @@ export const SocketContextProvider = ({ chatId, children, url, token, user }) =>
 };
 
 SocketContextProvider.propTypes = {
-  chatId: PropTypes.string, 
-  children: PropTypes.node, 
+  chatId: PropTypes.string,
+  children: PropTypes.node,
   url: PropTypes.string,
-  token: PropTypes.string, 
+  token: PropTypes.string,
   user: PropTypes.object,
-}
+};

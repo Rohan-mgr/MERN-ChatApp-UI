@@ -57,6 +57,7 @@ function SideNav() {
   };
 
   const handleLogout = () => {
+    socket.emit("user:online");
     _remove("auth");
     navigate("/");
   };
