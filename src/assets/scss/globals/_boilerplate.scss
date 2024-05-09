@@ -35,3 +35,26 @@ body {
     transform: scale(0.9);
     transition: opacity 500ms, transform 500ms;
 }
+
+.chat-details-enter {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+.chat-details-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 500ms, transform 500ms;
+}
+
+.chat-details-exit {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.chat-details-exit-active {
+    transition: opacity 0.5s ease, transform 0.5s;
+    opacity: 0;
+    transform: translateX(100%);
+}
+

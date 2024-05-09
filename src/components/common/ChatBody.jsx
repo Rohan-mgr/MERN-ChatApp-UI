@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { SocketContext } from "../../context/socket.context";
 import { fetchMessages } from "../../services/chat";
 import { _getSecureLs } from "../../utils/storage";
-import ChatItem from "./ChatItem";
 import BeatLoader from "react-spinners/BeatLoader";
+import RenderMsg from "./MessageRenderer";
 
 
 
@@ -37,17 +37,7 @@ export default function ChatBody() {
           .slice()
           .reverse()
           .map((m) => {
-            return (
-              <React.Fragment key={m?._id}>
-                <ChatItem
-                  key={m?._id}
-                  name={m?.sender?.fullName}
-                  isSender={user?._id === m?.sender?._id ? true : false}
-                >
-                  {m?.content}
-                </ChatItem>
-              </React.Fragment>
-            );
+            return <RenderMsg key={m?._id} msg = {m} user={user} />;
           })
       ) : (
         <p style={{ textAlign: "center" }}>Say hi 🖐</p>

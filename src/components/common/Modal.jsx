@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useFormik } from "formik";
@@ -7,17 +8,24 @@ import { searchUsers } from "../../services/user";
 import { SocketContext } from "../../context/socket.context";
 import { createGroupChat } from "../../services/chat";
 import PropTypes from "prop-types";
+import { v4 as uuidv4 } from "uuid";
+import useFetchChats from "../../hooks/useFetchChats";
+import Badge from "react-bootstrap/Badge";
+import { IoCloseCircle } from "react-icons/io5";
+import NameInitials from "./NameInitials";
 
 export default function RoomModal({ show, handleClose }) {
+  const navigate = useNavigate();
+  const { setChats } = useFetchChats();
   const { socket } = useContext(SocketContext);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [groupChatUsers, setGroupChatUsers] = useState([]);
   const [roomName, setRoomName] = useState("");
 
   useEffect(() => {
     setSearchedUsers([]);
-    setSelectedUsers([]);
+    setGroupChatUsers([]);
   }, []);
   const formik = useFormik({
     initialValues: {
@@ -40,7 +48,6 @@ export default function RoomModal({ show, handleClose }) {
     }
     try {
       const response = await searchUsers(searchValue);
-      console.log(response);
       setSearchedUsers(response?.data?.users);
     } catch (error) {
       console.log(error);
@@ -49,29 +56,36 @@ export default function RoomModal({ show, handleClose }) {
   };
 
   const handleUserClick = (user) => {
-    setSelectedUsers((prevState) => {
+    setGroupChatUsers((prevState) => {
       return [...prevState, user];
     });
     setShowSearch(false);
   };
 
   const handleRoomUserRemoval = (userId) => {
-    const updatedUsers = selectedUsers.filter(user => user?._id !== userId); 
-    setSelectedUsers(updatedUsers);
-    console.log(updatedUsers, 'updated users');
-  }
+    const updatedUsers = groupChatUsers.filter((user) => user?._id !== userId);
+    setGroupChatUsers(updatedUsers);
+  };
 
   const handleCreateRoom = async () => {
     try {
-      const response = await createGroupChat(roomName, selectedUsers);
-      console.log(response);
+      const uniqueRoomId = uuidv4();
+      const response = await createGroupChat(roomName, uniqueRoomId, groupChatUsers);
+      console.log(response, "create room >>>>>>>>>>>>>>>>>>>>>>", roomName, uniqueRoomId);
+      navigate(`/chat/${response?.data?._id}`, {
+        state: { name: response?.data?.groupName, isGroupChat: response?.data?.isGroupChat, chat: response?.data },
+      });
+      setChats((prevState) => {
+        return [response?.data, ...prevState];
+      });
     } catch (error) {
       console.log(error);
+      throw error;
     }
     socket.emit("create", roomName);
     handleClose();
   };
-console.log(selectedUsers);
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -87,10 +101,7 @@ console.log(selectedUsers);
           value={roomName}
           onChange={(e) => setRoomName(e.target.value)}
         />
-        <div className="selected__users">
-          {selectedUsers.length > 0 &&
-            selectedUsers.map((user) => <p key={user?._id}>{user?.fullName} <span onClick={() => handleRoomUserRemoval(user?._id)}>x</span></p>)}
-        </div>
+
         <div className="side__nav__search">
           <form onSubmit={formik.handleSubmit}>
             <BsSearch />
@@ -108,16 +119,27 @@ console.log(selectedUsers);
           </form>
         </div>
 
+        <div className="selected__users">
+          {groupChatUsers.length > 0 &&
+            groupChatUsers.map((user) => (
+              <Badge key={user?._id} id="user__badge">
+                {user?.fullName} <IoCloseCircle onClick={() => handleRoomUserRemoval(user?._id)} />
+              </Badge>
+            ))}
+        </div>
+
         {showSearch && searchedUsers.length > 0 && (
           <div className="searched__users">
             {searchedUsers.map((user) => (
-              <p
+              <NameInitials
                 key={user?._id}
-                style={{ cursor: "pointer" }}
-                onClick={() => {formik.values.search = ""; handleUserClick(user)}}
-              >
-                {user?.fullName}
-              </p>
+                handleClick={() => {
+                  formik.values.search = "";
+                  handleUserClick(user);
+                }}
+                name={user?.fullName}
+                profile={user?.profileUrl}
+              />
             ))}
           </div>
         )}
@@ -135,6 +157,6 @@ console.log(selectedUsers);
 }
 
 RoomModal.propTypes = {
-  show: PropTypes.bool, 
-  handleClose: PropTypes.func
-}
+  show: PropTypes.bool,
+  handleClose: PropTypes.func,
+};

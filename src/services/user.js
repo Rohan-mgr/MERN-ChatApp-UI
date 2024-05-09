@@ -12,13 +12,23 @@ export const fetchAllUsers = async () => {
   const response = await http.get(URL);
   return response;
 };
-export const userRegistration = async (credentials) => {
+export const userRegistration = async (credentials, imgFile) => {
   const URL = userEndpoints.signup;
-  const response = await http.post(URL, credentials);
+  const data = { ...credentials, profile: imgFile };
+  console.log(URL, data, "credentials>>>>");
+  const response = await http.post(URL, data);
   return response;
 };
 export const userLogin = async (credentials) => {
   const URL = userEndpoints.login;
   const response = await http.post(URL, credentials);
+  return response;
+};
+export const updateUserProfile = async (data) => {
+  const URL = userEndpoints.updateProfile;
+  const formData = new FormData();
+  formData.append("userId", data?.userId);
+  formData.append("profile", data?.file);
+  const response = await http.post(URL, formData);
   return response;
 };

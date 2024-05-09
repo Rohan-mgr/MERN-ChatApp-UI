@@ -1,47 +1,94 @@
-@use "./utils" as u; 
+@use "./utils" as u;
 
 .name__initials {
-    display: flex;
+  display: flex;
+  align-items: center;
+  height: u.rem(70);
+  border-radius: u.rem(7);
+  width: 100%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #edecec;
+  }
+
+  &__wrapper {
+    background-color: #edecec;
+
     align-items: center;
-    height: u.rem(70); 
-    border-radius: u.rem(7);
-    width: 100%;
-    cursor: pointer;
+    align-content: center;
+    // min-width: u.rem(55);
+    // width: fit-content;
+    height: 58px;
+    margin-right: u.rem(13);
+    // margin-left: u.rem(10);
 
-    &:hover {
-        background-color: #edecec;
-    }
+    display: flex;
+    justify-content: center;
+    // place-items: center;
+    flex-wrap: wrap;
+    border-radius: 50%;
+    min-width: u.rem(63);
+    box-sizing: border-box;
+    overflow: hidden;
+    clip-path: circle(calc(100% - 1.6rem));
+    position: relative;
 
-    &__wrapper {
-        color: #fff;
-        height: inherit;
+    &__group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      div {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      div:nth-child(1) {
+        left: 42%;
+        transform: translate(-56%, -56%);
+      }
+
+      div:nth-child(2) {
+        right: 60%;
+        transform: translate(42%, -111%);
+      }
+      div:last-child {
+        right: 60%;
+        z-index: -1;
+        transform: translate(69%, -24%);
+
         display: grid;
         place-items: center;
         border-radius: 50%;
-        min-width: u.rem(55);
-        clip-path: circle(calc(100% - 2.5rem));
+        min-width: u.rem(30);
+        clip-path: circle(calc(87% - 1.9rem));
+        border: 2px solid #fff;
+        overflow: hidden;
         background-color: rgb(127, 127, 203);
-        margin-right: u.rem(13);
+        color: #fff;
+        font-size: 0.7rem;
+      }
+    }
+  }
 
-        span {
-            font-weight: 700;
-            font-size: clamp(u.rem(16), 1.2vw + u.rem(10),u.rem(20));
-        }
+  &__content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    p {
+      font-weight: 500;
+      margin-bottom: 0;
+      margin-top: 5px;
+      font-size: 1rem;
     }
-    
-    &__content {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        // justify-content: center;
-        // align-items: center;
-        p {
-            font-weight: 600;
-            margin-bottom: 0;
-        }
-        span {
-            display: inline-block;
-            font-size: 14px;
-        }
+    span {
+      display: inline-block;
+      font-size: 14px;
     }
+  }
 }

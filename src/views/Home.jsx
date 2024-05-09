@@ -12,10 +12,14 @@ import Alert from "../components/common/Alert";
 import { userRegistration, userLogin } from "../services/user";
 import { useNavigate } from "react-router-dom";
 import { _setSecureLs } from "../utils/storage";
+import useFetchChats from "../hooks/useFetchChats";
+import { _setCookie, _removeCookie } from "../utils/cookies";
 
 function Home() {
   const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState(null);
   const [formState, setFormState] = useState(false);
+  const { chats } = useFetchChats();
   const [alert, setAlert] = useState({
     status: false,
     title: "",
@@ -45,7 +49,7 @@ function Home() {
 
   const handleUserSignUp = async (values, resetForm) => {
     try {
-      const response = await userRegistration(values);
+      const response = await userRegistration(values, selectedFile);
       setAlert((prevState) => {
         return {
           ...prevState,
@@ -55,6 +59,7 @@ function Home() {
           type: "success",
         };
       });
+      _removeCookie("loggedInUser");
       setFormState(false);
     } catch (error) {
       setAlert((prevState) => {
@@ -82,11 +87,28 @@ function Home() {
           type: "success",
         };
       });
+      let user = response?.data?.loggedInUser;
       _setSecureLs("auth", {
-        user: response?.data?.loggedInUser,
+        user,
         token: response?.data?.token,
       });
-      navigate("chat/1");
+      _setCookie("loggedInUser", user, 365 * 100);
+
+      if (chats?.length > 0) {
+        let toggleUser = chats[0].users[0]?._id === user?._id ? 1 : 0;
+        let latestChatUser = chats[0]?.users[toggleUser];
+        navigate(`chat/${chats[0]?._id}`, {
+          state: {
+            name: chats[0]?.isGroupChat ? chats[0]?.groupName : latestChatUser?.fullName,
+            isGroupChat: chats[0]?.isGroupChat,
+            userId: latestChatUser?._id,
+            chat: chats[0],
+            profile: latestChatUser?.profileUrl,
+          },
+        });
+      } else {
+        navigate("chat/1");
+      }
     } catch (error) {
       setAlert((prevState) => {
         return {
@@ -102,6 +124,12 @@ function Home() {
     resetForm();
   };
 
+  const handleFileChange = (event) => {
+    const fileInput = event.currentTarget;
+    const file = fileInput.files[0];
+    setSelectedFile(file);
+  };
+
   const formik = useFormik({
     initialValues: {
       fullName: "",
@@ -110,9 +138,7 @@ function Home() {
     },
     validationSchema: formState ? userSignupSchema : userLoginSchema,
     onSubmit: (values, { resetForm }) =>
-      !formState
-        ? handleUserLogin(values, resetForm)
-        : handleUserSignUp(values, resetForm),
+      !formState ? handleUserLogin(values, resetForm) : handleUserSignUp(values, resetForm),
   });
 
   return (
@@ -138,13 +164,7 @@ function Home() {
         <h3>Login To Start Conversation</h3>
 
         <form onSubmit={formik.handleSubmit}>
-          <CSSTransition
-            in={alert?.status}
-            nodeRef={alertRef}
-            timeout={500}
-            classNames="signup-field"
-            unmountOnExit
-          >
+          <CSSTransition in={alert?.status} nodeRef={alertRef} timeout={500} classNames="signup-field" unmountOnExit>
             <div ref={alertRef}>
               <Alert
                 alertTitle={alert?.title}
@@ -156,30 +176,14 @@ function Home() {
             </div>
           </CSSTransition>
           <div className="form__navigation">
-            <div
-              className={`form__navigation__nav ${
-                formState ? "active__nav" : ""
-              }`}
-              onClick={handleNavSignUpClick}
-            >
+            <div className={`form__navigation__nav ${formState ? "active__nav" : ""}`} onClick={handleNavSignUpClick}>
               <p>Sign Up</p>
             </div>
-            <div
-              className={`form__navigation__nav ${
-                !formState ? "active__nav" : ""
-              }`}
-              onClick={handleNavLoginClick}
-            >
+            <div className={`form__navigation__nav ${!formState ? "active__nav" : ""}`} onClick={handleNavLoginClick}>
               <p>Login</p>
             </div>
           </div>
-          <CSSTransition
-            in={formState}
-            nodeRef={inputRef}
-            timeout={500}
-            classNames="signup-field"
-            unmountOnExit
-          >
+          <CSSTransition in={formState} nodeRef={inputRef} timeout={500} classNames="signup-field" unmountOnExit>
             <div className="from-group" ref={inputRef}>
               <InputField
                 type="text"
@@ -190,6 +194,7 @@ function Home() {
                 handleBlur={formik.handleBlur}
                 value={formik.values.fullName}
               />
+              <input type="file" name="profile" onChange={handleFileChange} accept="image/*" />
             </div>
           </CSSTransition>
           <div className="from-group">

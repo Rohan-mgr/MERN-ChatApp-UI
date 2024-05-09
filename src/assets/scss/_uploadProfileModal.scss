@@ -1,0 +1,56 @@
+@use "./utils" as u;
+
+.modal-body {
+  .profile__preview {
+    width: 100%;
+    height: 23vh;
+    border: 2px dotted #0275d8;
+    margin: 10px 0;
+    border-radius: 7px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    img {
+      width: 220px;
+      height: 22vh;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+    }
+
+    p {
+      color: #fff;
+    }
+  }
+  .upload__profile__label {
+    margin-right: u.rem(10);
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  span {
+    display: inline-block;
+    width: 100%;
+    height: 35px;
+    background-color: #0275d8;
+    text-align: center;
+    line-height: 26px;
+    font-size: 1.5rem;
+    color: #fff;
+    border-radius: 7px;
+  }
+
+  input[type="file"]:hover + span {
+    background: #f0f0f0 !important;
+    color: #0275d8;
+    border: 2px solid #0275d8;
+  }
+}

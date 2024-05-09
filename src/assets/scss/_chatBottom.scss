@@ -3,6 +3,51 @@
 .chat__bottom {
     height: u.rem(40); 
     padding-right: u.rem(10);
+    position: relative;
+
+    .selected__file {
+      position: absolute;
+      bottom: 43px; 
+      left: 0; 
+      padding: 10px; 
+      background-color: #c1bebe;
+      border-radius: .7rem;
+
+      .image__wrapper {
+        display: flex;
+        height: auto;
+        // max-width: 80px;
+        max-height: 60px;
+        position: relative;
+
+        .attachment__wrapper {
+          display: flex;
+          align-items: center;
+
+          .attachment__icon {
+            color: #0275d8;
+            font-size: 1.2rem;
+          }
+        }
+
+        .image__deselect{
+          position: absolute;
+          top: -6px; 
+          right: -6px; 
+          background-color: #fff;
+          border-radius: 15px;
+          height: 20px;
+          width: 20px; 
+          cursor: pointer;
+        }
+
+        img {
+          width: inherit;
+          max-width: inherit;
+          height: inherit;
+        }
+      }
+    }
     
     form {
         width: 100%;
@@ -25,5 +70,40 @@
 
     &__input {
         flex: 1; 
+        align-items: center;
+        display: flex;
+
+        div {
+            flex: 1;
+        }
     }
+
+    label {
+        margin-right: u.rem(10); 
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+      }
+      
+      input[type="file"] {
+        display: none; 
+      }
+      
+      span {
+        display: inline-block;
+        width: 28px; 
+        height: 28px; 
+        background-color: #0275d8;
+        border-radius: 50%; 
+        text-align: center;
+        line-height: 26px;
+        font-size: 1.5rem; 
+        color: #fff;
+      }
+      
+      input[type="file"]:hover + span {
+        background-color: #f0f0f0; 
+        color: #0275d8;
+        border: 2px solid #0275d8;
+      }
 }

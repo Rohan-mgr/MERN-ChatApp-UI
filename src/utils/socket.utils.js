@@ -1,7 +1,10 @@
 export const SocketHandlers = (setData) => ({
   "save-messsage": function (data) {
-    console.log(data, "datajfsjfsjd")
     setData("message", data);
+  },
+  "active:users": function (data) {
+    console.log(data, "active users data");
+    setData("activeUsers", data);
   },
 });
 

@@ -5,7 +5,7 @@ import { getUserToken } from "./storage";
 // http is for unauthenticated routes i.e token is not needed
 export const http = axios.create({
   baseURL: config.baseURL,
-  headers: { "Content-Type": "application/json" },
+  headers: { "Content-Type": "multipart/form-data" },
 });
 
 http.interceptors.request.use(

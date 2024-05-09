@@ -1,19 +1,26 @@
 @use "./utils" as u;
 
 .avatar {
-    color: #fff;
-    margin-top: 8px;
-    width: 30px; 
-    height: 30px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    min-width: u.rem(55);
-    clip-path: circle(calc(100% - 1.9rem));
-    background-color: rgb(127, 127, 203);
+  color: #fff;
+  // margin-top: 8px;
+  // width: 30px;
+  // height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  min-width: u.rem(55);
+  clip-path: circle(calc(100% - 1.9rem));
+  border: 2px solid #fff;
+  overflow: hidden;
+  background-color: rgb(127, 127, 203);
 
-    span {
-        font-weight: 300;
-        font-size: clamp(u.rem(12), .5vw + u.rem(5),u.rem(16));
-    }
+  img {
+    width: inherit;
+    height: inherit;
+  }
+
+  &__name {
+    font-weight: 300;
+    font-size: clamp(u.rem(12), 0.5vw + u.rem(5), u.rem(16));
+  }
 }
