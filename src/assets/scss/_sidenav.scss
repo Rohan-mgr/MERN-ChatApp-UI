@@ -5,6 +5,48 @@
   height: 100vh;
   position: relative;
 
+  .tab-buttons {
+    display: flex;
+    button {
+      flex: 1;
+      padding: 10px 20px;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      width: auto;
+      cursor: pointer;
+    }
+
+    button.active {
+      background-color: #fff;
+    }
+  }
+
+  .tab-content {
+    padding-top: 0 !important;
+    border: 1px solid #ddd;
+    overflow-y: hidden;
+
+    &__active__users {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - u.rem(58) - u.rem(55) - u.rem(56) - u.rem(40));
+      overflow-y: scroll;
+
+      .avatar__online {
+        display: flex;
+        align-items: center;
+        padding-right: 5px;
+
+        &__dot {
+          width: 12px;
+          height: 12px;
+          background-color: green;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
   &__loggedin__user {
     position: absolute;
     left: 0;

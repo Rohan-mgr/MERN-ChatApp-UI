@@ -7,7 +7,6 @@ import { ChatContextProvider } from "../../context/chat.context";
 import { _getSecureLs } from "../../utils/storage";
 import ChatDetails from "./ChatDetails";
 
-
 function App() {
   const { chatId } = useParams();
   const { user } = _getSecureLs("auth");

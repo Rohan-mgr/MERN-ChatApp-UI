@@ -22,8 +22,11 @@ export const SocketContextProvider = ({ chatId, children, url, token, user }) =>
         }
         break;
 
-      case "activeUsers":
-        setActiveUsers((prevState) => [...prevState, data?.activeUsers]);
+      case "activeUsers": {
+        let activeUsersList = Object.values(data?.activeUsers);
+        activeUsersList = activeUsersList?.filter((u) => u?._id !== user?._id);
+        setActiveUsers(activeUsersList);
+      }
     }
   }
 

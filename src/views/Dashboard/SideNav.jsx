@@ -16,7 +16,7 @@ import { ChatContext } from "../../context/chat.context";
 
 function SideNav() {
   const navigate = useNavigate();
-  const { socket } = useContext(SocketContext);
+  const { socket, activeUsers } = useContext(SocketContext);
   const { handleSearchedUserClick } = useContext(ChatContext);
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -24,6 +24,12 @@ function SideNav() {
   const { isLoading, chats } = useFetchChats();
   const { user } = _getSecureLs("auth");
   const [showProfileModal, setShowProfileModal] = useState(false);
+
+  const [activeTab, setActiveTab] = useState(1);
+
+  const handleTabClick = (tabNumber) => {
+    setActiveTab(tabNumber);
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -76,80 +82,120 @@ function SideNav() {
           </Button>
         </div>
       </div>
-      <div className="side__nav__search">
-        <form onSubmit={formik.handleSubmit}>
-          <BsSearch />
-          <input
-            type="text"
-            placeholder="Search People"
-            name="search"
-            autoComplete="off"
-            value={formik.values.search}
-            onChange={(e) => {
-              formik.handleChange(e);
-              handleInputChange(e);
-            }}
-          />
-        </form>
+
+      <div className="tab-buttons">
+        <button className={activeTab === 1 ? "active" : ""} onClick={() => handleTabClick(1)}>
+          Recent Chats
+        </button>
+        <button className={activeTab === 2 ? "active" : ""} onClick={() => handleTabClick(2)}>
+          Active Users
+        </button>
       </div>
-      {!showSearch ? (
-        <div className="side__nav__users">
-          {isLoading ? (
-            <ScaleLoader color="#0D6EFD" style={{ textAlign: "center" }} />
-          ) : chats?.length > 0 ? (
-            chats?.map((chat) => {
-              let chatUserId = chat?.users[0]?._id;
-              let toggleUser = chat.users[0]?._id === user?._id ? 1 : 0;
-              let name = chat?.isGroupChat ? chat?.groupName : chat?.users[toggleUser]?.fullName;
-              let chatUser = !chat?.isGroupChat ? chat?.users[toggleUser] : null;
-              // console.log(chatUser, "chat user>>>>>>>");
-              return (
-                <NameInitials
-                  key={chat?._id}
-                  handleClick={() => {
-                    // setSelectedChat(chat);
-                    navigate(`chat/${chat?._id}`, {
-                      state: {
-                        name: name,
-                        isGroupChat: chat?.isGroupChat,
-                        userId: chatUserId,
-                        chat: chat,
-                        profile: chatUser?.profileUrl,
-                      },
-                    });
+      <div className="tab-content">
+        {activeTab === 1 && (
+          <>
+            <div className="side__nav__search">
+              <form onSubmit={formik.handleSubmit}>
+                <BsSearch />
+                <input
+                  type="text"
+                  placeholder="Search People"
+                  name="search"
+                  autoComplete="off"
+                  value={formik.values.search}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                    handleInputChange(e);
                   }}
-                  name={name}
-                  userId={user?._id}
-                  // chatId={chat?._id}
-                  chat={chat}
-                  isHeading={true}
-                  socket={socket}
-                  profile={chatUser?.profileUrl}
                 />
-              );
-            })
-          ) : (
-            <p>No Chats Found!</p>
-          )}
-        </div>
-      ) : (
-        <div className="side__nav__searchedUsers">
-          {searchedUsers?.map((user) => {
-            return (
-              <NameInitials
-                key={user?._id}
-                handleClick={() => {
-                  handleSearchedUserClick(user?._id, user?.fullName, user?.profileUrl, user?.isGroupChat);
-                  formik.values.search = "";
-                  setShowSearch(false);
-                }}
-                name={user?.fullName}
-                profile={user?.profileUrl}
-              />
-            );
-          })}
-        </div>
-      )}
+              </form>
+            </div>
+            {!showSearch ? (
+              <div className="side__nav__users">
+                {isLoading ? (
+                  <ScaleLoader color="#0D6EFD" style={{ textAlign: "center" }} />
+                ) : chats?.length > 0 ? (
+                  chats?.map((chat) => {
+                    let chatUserId = chat?.users[0]?._id;
+                    let toggleUser = chat.users[0]?._id === user?._id ? 1 : 0;
+                    let name = chat?.isGroupChat ? chat?.groupName : chat?.users[toggleUser]?.fullName;
+                    let chatUser = !chat?.isGroupChat ? chat?.users[toggleUser] : null;
+                    // console.log(chatUser, "chat user>>>>>>>");
+                    return (
+                      <NameInitials
+                        key={chat?._id}
+                        handleClick={() => {
+                          // setSelectedChat(chat);
+                          navigate(`chat/${chat?._id}`, {
+                            state: {
+                              name: name,
+                              isGroupChat: chat?.isGroupChat,
+                              userId: chatUserId,
+                              chat: chat,
+                              profile: chatUser?.profileUrl,
+                            },
+                          });
+                        }}
+                        name={name}
+                        userId={user?._id}
+                        // chatId={chat?._id}
+                        chat={chat}
+                        isHeading={true}
+                        socket={socket}
+                        profile={chatUser?.profileUrl}
+                      />
+                    );
+                  })
+                ) : (
+                  <p>No Chats Found!</p>
+                )}
+              </div>
+            ) : (
+              <div className="side__nav__searchedUsers">
+                {searchedUsers?.map((user) => {
+                  return (
+                    <NameInitials
+                      key={user?._id}
+                      handleClick={() => {
+                        handleSearchedUserClick(user?._id, user?.fullName, user?.profileUrl, user?.isGroupChat);
+                        formik.values.search = "";
+                        setShowSearch(false);
+                      }}
+                      name={user?.fullName}
+                      profile={user?.profileUrl}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
+        {activeTab === 2 && (
+          <div className="tab-content__active__users">
+            {activeUsers?.length > 0 ? (
+              activeUsers?.map((user) => {
+                return (
+                  <div key={user?._id} className="avatar__online">
+                    <NameInitials
+                      handleClick={() => {
+                        handleSearchedUserClick(user?._id, user?.fullName, user?.profileUrl, user?.isGroupChat);
+                        formik.values.search = "";
+                        setShowSearch(false);
+                      }}
+                      name={user?.fullName}
+                      profile={user?.profileUrl}
+                    />
+                    <div className="avatar__online__dot"></div>
+                  </div>
+                );
+              })
+            ) : (
+              <p style={{ textAlign: "center" }}>No Active Users</p>
+            )}
+          </div>
+        )}
+      </div>
+
       <div className="side__nav__loggedin__user">
         {showProfileModal && (
           <UploadProfileModal show={showProfileModal} handleProfileModal={handleProfileModelClose} userId={user?._id} />
